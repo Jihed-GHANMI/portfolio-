@@ -1,0 +1,28 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/evalitx-ai"
+  to = "/projets/evalitx-ai.html"
+  status = 200
+
+[[redirects]]
+  from = "/esg-sp500"
+  to = "/projets/esg-sp500.html"
+  status = 200
+
+[[redirects]]
+  from = "/distrisys"
+  to = "/projets/distrisys-etl.html"
+  status = 200
+
+[[redirects]]
+  from = "/rafiq-al-ulum"
+  to = "/projets/rafiq-al-ulum.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"

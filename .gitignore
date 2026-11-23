@@ -1,0 +1,9 @@
+# Système & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Fichiers sources lourds non nécessaires pour le web (optionnel)
+*.pptx
+*.docx

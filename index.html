@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jihed GHANMI · Data Scientist | Finance, Économétrie & IA appliquée</title>
+  <meta name="description" content="Portfolio de Jihed GHANMI — Data Scientist diplômé de l'ESCT (Mention Très Bien). Modélisation multicritère AHP, Architectures RAG / LLM, Finance quantitative et Business Intelligence.">
+  <meta name="keywords" content="Jihed Ghanmi, Data Scientist, Finance, Econometrie, IA, Machine Learning, RAG, LLM, Power BI, Python, Tunis">
+  <meta name="author" content="Jihed GHANMI">
+
+  <!-- Open Graph / Meta Réseaux -->
+  <meta property="og:title" content="Jihed GHANMI · Portfolio Data Science & IA">
+  <meta property="og:description" content="Découvrez mes 4 études de cas phares : EvalitX AI, Risques ESG S&P 500, Distrisys ETL, et Rafiq Al-Ulum.">
+  <meta property="og:image" content="assets/portrait.png">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon SVG Dynamique -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230d5c46'/><text x='50' y='65' font-size='42' font-family='sans-serif' font-weight='800' fill='%23ffffff' text-anchor='middle'>JG</text></svg>">
+
+  <!-- Polices Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================
+       VARIABLES DE STYLE & PALETTE ROYALE (VERT ROYAL & ACCENTS)
+       ========================================================== */
+    :root {
+      /* Mode Clair (Vert Royal & Blanc) */
+      --bg: #f9fbf9;
+      --card: #ffffff;
+      --card-glass: rgba(255, 255, 255, 0.85);
+      --card-hover: #ffffff;
+      --muted: #edf4f0;
+      --border: #dbe7df;
+      --border-subtle: #ebf2ed;
+      --fg: #0d1e17;
+      --fg-muted: #496155;
+      --fg-light: #70867a;
+      
+      /* Couleurs Charte Royale */
+      --royal: #0d5c46;           /* Vert Royal Principal */
+      --royal-dark: #084232;      /* Vert Royal Profond */
+      --royal-light: #167a5f;     /* Émeraude Douce */
+      --royal-glow: rgba(13, 92, 70, 0.18);
+      --royal-tag-bg: rgba(13, 92, 70, 0.08);
+      --royal-tag-fg: #0d5c46;
+      
+      /* Harmonie Accents */
+      --gold: #c59b27;            /* Or Royal Subtil */
+      --gold-light: #fef9e7;
+      --mint: #3ebd8c;            /* Menthe Fraîche */
+      --mint-glow: rgba(62, 189, 140, 0.25);
+      --shadow: 0 16px 40px -10px rgba(13, 40, 30, 0.08);
+      --shadow-lg: 0 24px 60px -15px rgba(13, 40, 30, 0.14);
+      --header-bg: rgba(249, 251, 249, 0.85);
+    }
+
+    /* Mode Sombre (Vert Royal & Noir Profond) */
+    :root[data-theme="dark"] {
+      --bg: #070e0b;              /* Noir Émeraude Profond */
+      --card: #0d1a15;            /* Carte Noir Vert Royal */
+      --card-glass: rgba(13, 26, 21, 0.85);
+      --card-hover: #12221c;
+      --muted: #13241d;
+      --border: #1b3529;
+      --border-subtle: #142820;
+      --fg: #edfbf4;              /* Blanc Crème Mentholé */
+      --fg-muted: #8ea89b;
+      --fg-light: #5f7a6d;
+      
+      /* Couleurs Charte Royale Dark */
+      --royal: #10b981;           /* Émeraude Royale Lumineuse */
+      --royal-dark: #059669;
+      --royal-light: #34d399;
+      --royal-glow: rgba(16, 185, 129, 0.28);
+      --royal-tag-bg: rgba(16, 185, 129, 0.14);
+      --royal-tag-fg: #34d399;
+      
+      /* Harmonie Accents Dark */
+      --gold: #fbbf24;
+      --gold-light: rgba(251, 191, 36, 0.12);
+      --mint: #34d399;
+      --mint-glow: rgba(52, 211, 153, 0.3);
+      --shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+      --shadow-lg: 0 24px 60px -15px rgba(0, 0, 0, 0.8);
+      --header-bg: rgba(7, 14, 11, 0.85);
+    }
+
+    /* Base Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+
+    /* Barre de défilement de lecture supérieure (comme dans les projets) */
+    #pg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 4px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--royal), var(--mint), var(--gold));
+      z-index: 10000;
+      transition: width 0.1s ease-out;
+    }
+
+    /* Lueur d'ambiance fluide en arrière-plan (Glowing Blobs) */
+    .ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+      animation: floatSlow 18s ease-in-out infinite alternate;
+    }
+    :root[data-theme="dark"] .ambient-glow {
+      opacity: 0.25;
+      filter: blur(110px);
+    }
+
+    @keyframes floatSlow {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-40px) scale(1.08) translateX(20px); }
+      100% { transform: translateY(30px) scale(0.95) translateX(-20px); }
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ==========================================================
+       HEADER & NAVIGATION
+       ========================================================== */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--fg);
+    }
+
+    .logo-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--royal), var(--mint));
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 6px 18px var(--royal-glow);
+    }
+
+    .logo-text h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .logo-text span {
+      font-size: 12px;
+      color: var(--royal);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--fg-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14.5px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--royal);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Switcher Thème */
+    .theme-toggle-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      background: var(--card);
+      border-color: var(--royal);
+      color: var(--royal);
+      transform: scale(1.05);
+    }
+
+    .btn-cv-header {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 12px;
+      background: var(--royal);
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 13.5px;
+      text-decoration: none;
+      box-shadow: 0 4px 14px var(--royal-glow);
+      transition: all 0.25s ease;
+    }
+
+    .btn-cv-header:hover {
+      background: var(--royal-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--royal-glow);
+    }
+
+    /* ==========================================================
+       HERO SECTION
+       ========================================================== */
+    .hero-section {
+      padding: 80px 0 60px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 99px;
+      background: var(--royal-tag-bg);
+      border: 1px solid var(--border);
+      color: var(--royal-tag-fg);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 0 var(--mint);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(62, 189, 140, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(62, 189, 140, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(62, 189, 140, 0); }
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(38px, 5.2vw, 58px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, var(--royal), var(--mint));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(18px, 2.2vw, 22px);
+      font-weight: 700;
+      color: var(--royal);
+      margin-bottom: 18px;
+      line-height: 1.35;
+    }
+
+    .hero-desc {
+      font-size: 16.5px;
+      color: var(--fg-muted);
+      line-height: 1.75;
+      margin-bottom: 32px;
+      max-width: 600px;
+    }
+
+    .hero-desc strong {
+      color: var(--fg);
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 26px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--royal), var(--royal-light));
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      box-shadow: 0 10px 25px var(--royal-glow);
+      transition: all 0.25s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px var(--royal-glow);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-weight: 700;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: var(--muted);
+      border-color: var(--royal);
+      color: var(--royal);
+      transform: translateY(-2px);
+    }
+
+    .hero-meta-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--fg-muted);
+      font-weight: 600;
+    }
+
+    .meta-chip svg {
+      color: var(--royal);
+    }
+
+    /* ==========================================================
+       3D INTERACTIVE VIEWER (CARTE PORTRAIT & CARTES PROJETS)
+       (Même technologie fluide que dans les études de cas)
+       ========================================================== */
+    .v3-container {
+      perspective: 1200px;
+      touch-action: pan-y;
+      user-select: none;
+      -webkit-user-select: none;
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    .v3-card {
+      position: relative;
+      transform-style: preserve-3d;
+      will-change: transform;
+      border-radius: 28px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      padding: 18px;
+      transition: transform 0.15s ease-out;
+    }
+
+    .v3-card::before {
+      content: "";
+      position: absolute;
+      inset: -10px;
+      background: linear-gradient(135deg, var(--royal), var(--mint), var(--gold));
+      filter: blur(34px);
+      opacity: 0.35;
+      transform: translateZ(-60px);
+      border-radius: 36px;
+      z-index: -1;
+      pointer-events: none;
+    }
+    :root[data-theme="dark"] .v3-card::before {
+      opacity: 0.25;
+      filter: blur(44px);
+    }
+
+    .portrait-img-box {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      background: #111;
+      aspect-ratio: 4 / 5;
+    }
+
+    .portrait-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    .floating-pill {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      background: var(--card-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .floating-pill-info h4 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--fg);
+    }
+    .floating-pill-info p {
+      font-size: 11.5px;
+      color: var(--royal);
+      font-weight: 600;
+    }
+
+    .floating-pill-score {
+      background: var(--royal);
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    /* ==========================================================
+       KEY METRICS / STATS BAR
+       ========================================================== */
+    .metrics-bar {
+      margin-top: 40px;
+      margin-bottom: 90px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-item {
+      background: var(--card);
+      padding: 28px 24px;
+      text-align: center;
+      transition: background 0.2s ease;
+    }
+    .metric-item:hover {
+      background: var(--muted);
+    }
+
+    .metric-num {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(32px, 3.5vw, 44px);
+      font-weight: 800;
+      color: var(--royal);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .metric-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--fg-muted);
+    }
+
+    /* ==========================================================
+       SECTION HEADERS
+       ========================================================== */
+    .section-head {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 50px;
+    }
+
+    .section-kicker {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--royal);
+      background: var(--royal-tag-bg);
+      padding: 4px 14px;
+      border-radius: 99px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--fg-muted);
+      line-height: 1.65;
+    }
+
+    /* ==========================================================
+       PROJETS & ÉTUDES DE CAS (THE CORE SECTION)
+       ========================================================== */
+    .projects-section {
+      padding: 50px 0 100px;
+      position: relative;
+    }
+
+    /* Filtres de projets */
+    .project-filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+
+    .filter-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--fg-muted);
+      padding: 9px 20px;
+      border-radius: 99px;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .filter-btn:hover {
+      color: var(--royal);
+      border-color: var(--royal);
+      background: var(--muted);
+    }
+
+    .filter-btn.active {
+      background: var(--royal);
+      color: #ffffff;
+      border-color: var(--royal);
+      box-shadow: 0 4px 14px var(--royal-glow);
+    }
+
+    /* Grille de cartes de projets */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .project-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--royal);
+    }
+
+    .card-top-stripe {
+      height: 5px;
+      background: linear-gradient(90deg, var(--royal), var(--mint));
+    }
+    .project-card:nth-child(2) .card-top-stripe {
+      background: linear-gradient(90deg, #2f7d5b, var(--gold));
+    }
+    .project-card:nth-child(3) .card-top-stripe {
+      background: linear-gradient(90deg, #0b3d91, #00a6e0);
+    }
+    .project-card:nth-child(4) .card-top-stripe {
+      background: linear-gradient(90deg, #0b7a6e, #e98b77);
+    }
+
+    .project-card-body {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .project-header-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .project-cat {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--royal);
+    }
+
+    .project-status {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--muted);
+      color: var(--fg-muted);
+      border: 1px solid var(--border);
+    }
+
+    .project-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .project-title a {
+      color: var(--fg);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .project-title a:hover {
+      color: var(--royal);
+    }
+
+    .project-desc {
+      font-size: 15px;
+      color: var(--fg-muted);
+      line-height: 1.65;
+      margin-bottom: 22px;
+      flex-grow: 1;
+    }
+
+    /* Boîte de métrique phare du projet */
+    .project-highlight-box {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .highlight-item strong {
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--royal);
+    }
+
+    .highlight-item span {
+      font-size: 12px;
+      color: var(--fg-muted);
+      font-weight: 600;
+    }
+
+    /* Tags de technos */
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 26px;
+    }
+
+    .project-tags span {
+      background: var(--royal-tag-bg);
+      color: var(--royal-tag-fg);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Bouton d'accès direct à l'étude de cas */
+    .btn-case-study {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 13px 20px;
+      border-radius: 14px;
+      background: var(--card);
+      border: 1.5px solid var(--royal);
+      color: var(--royal);
+      font-weight: 700;
+      font-size: 14.5px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-case-study:hover {
+      background: var(--royal);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--royal-glow);
+    }
+
+    .btn-case-study svg {
+      transition: transform 0.2s ease;
+    }
+    .btn-case-study:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* ==========================================================
+       COMPÉTENCES & STACK TECHNIQUE (GRILLE 4 PILIERS)
+       ========================================================== */
+    .skills-section {
+      padding: 60px 0 100px;
+      background: var(--muted);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 22px;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .skill-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--royal-tag-bg);
+      color: var(--royal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .skill-card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 14px;
+      color: var(--fg);
+    }
+
+    .skill-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .skill-chips span {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+
+    /* ==========================================================
+       PARCOURS & EXPÉRIENCES (TIMELINE)
+       ========================================================== */
+    .timeline-section {
+      padding: 90px 0;
+    }
+
+    .timeline-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .timeline-wrap::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 20px;
+      width: 3px;
+      background: var(--border);
+      border-radius: 99px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 60px;
+      margin-bottom: 44px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 12px;
+      top: 6px;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 4px solid var(--royal);
+      box-shadow: 0 0 0 4px var(--royal-glow);
+    }
+
+    .timeline-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .timeline-date {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--royal);
+      margin-bottom: 6px;
+    }
+
+    .timeline-role {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+
+    .timeline-company {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--fg-muted);
+      margin-bottom: 14px;
+    }
+
+    .timeline-tasks {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .timeline-tasks li {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 18px;
+      line-height: 1.6;
+    }
+
+    .timeline-tasks li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--royal);
+      font-weight: bold;
+    }
+
+    /* ==========================================================
+       SECTION CONTACT & FOOTER
+       ========================================================== */
+    .contact-section {
+      padding: 80px 0;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .contact-card-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contact-pill {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--fg);
+      transition: all 0.25s ease;
+    }
+
+    .contact-pill:hover {
+      background: var(--card);
+      border-color: var(--royal);
+      transform: translateX(6px);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-pill-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--royal-tag-bg);
+      color: var(--royal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .contact-pill-text small {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .contact-pill-text strong {
+      font-size: 15px;
+      color: var(--fg);
+    }
+
+    footer {
+      padding: 36px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      background: var(--bg);
+      font-size: 14px;
+      color: var(--fg-muted);
+    }
+
+    /* ==========================================================
+       RESPONSIVE DESIGN (MOBILE & TABLETTE)
+       ========================================================== */
+    @media (max-width: 980px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+      .hero-desc {
+        margin: 0 auto 32px;
+      }
+      .hero-buttons {
+        justify-content: center;
+      }
+      .hero-meta-chips {
+        justify-content: center;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav-links {
+        display: none;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-section {
+        padding: 50px 0 40px;
+      }
+      .project-card-body {
+        padding: 22px;
+      }
+      .timeline-wrap::before {
+        left: 10px;
+      }
+      .timeline-dot {
+        left: 2px;
+      }
+      .timeline-item {
+        padding-left: 36px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Barre de lecture supérieure -->
+  <div id="pg"></div>
+
+  <!-- Halo d'ambiance lumineux (Glowing Blobs) -->
+  <div class="ambient-glow" style="top: 80px; left: -100px; width: 450px; height: 450px; background: var(--royal);"></div>
+  <div class="ambient-glow" style="top: 600px; right: -120px; width: 400px; height: 400px; background: var(--mint);"></div>
+  <div class="ambient-glow" style="top: 1500px; left: 10%; width: 500px; height: 500px; background: var(--gold);"></div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="wrap">
+      <div class="nav-inner">
+        <a href="#hero" class="logo">
+          <div class="logo-badge">JG</div>
+          <div class="logo-text">
+            <h2>Jihed GHANMI</h2>
+            <span>Data Scientist &amp; IA</span>
+          </div>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="#apropos">À Propos</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#competences">Compétences</a></li>
+          <li><a href="#parcours">Parcours</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-actions">
+          <button id="themeToggleBtn" class="theme-toggle-btn" title="Changer de thème (Sombre / Clair)" aria-label="Changer de thème">
+            <!-- Icône Lune pour Light mode -->
+            <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            <!-- Icône Soleil pour Dark mode -->
+            <svg id="sunIcon" style="display:none;" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          </button>
+
+          <a href="assets/CV_Jihed_GHANMI.pdf" target="_blank" download class="btn-cv-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>CV (PDF)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main>
+    <section id="hero" class="hero-section">
+      <div class="wrap">
+        <div class="hero-grid">
+          
+          <!-- Colonne Gauche : Présentation -->
+          <div>
+            <div class="badge-status">
+              <span class="pulse-dot"></span>
+              <span>Data Scientist · ESCT (Mention Très Bien)</span>
+            </div>
+
+            <h1 class="hero-title">
+              Jihed GHANMI<br>
+              <span class="gradient-text">Finance, Économétrie &amp; IA Appliquée</span>
+            </h1>
+
+            <p class="hero-subtitle">
+              De la rigueur statistique au déploiement d’architectures IA en production.
+            </p>
+
+            <p class="hero-desc">
+              Data Scientist diplômé d'un <strong>Master en Data Science</strong> et d'une Licence en <strong>Ingénierie Économique et Financière</strong>. Auteur d'un modèle scientifique de maturité data déployé en production, combinant <strong>analyse multicritère (AHP)</strong>, <strong>modélisation statistique</strong> et <strong>IA générative (LLM, RAG)</strong>.
+            </p>
+
+            <div class="hero-buttons">
+              <a href="#projets" class="btn-primary">
+                <span>Explorer les 4 Études de Cas</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </a>
+
+              <a href="assets/CV_Jihed_GHANMI.pdf" target="_blank" class="btn-secondary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span>Télécharger le CV</span>
+              </a>
+            </div>
+
+            <div class="hero-meta-chips">
+              <div class="meta-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <span>Tunis, Tunisie</span>
+              </div>
+              <div class="meta-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                <span>Python · R · SQL · LLM</span>
+              </div>
+              <div class="meta-chip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
+                <span>Disponible immédiatement</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Colonne Droite : Carte Portrait 3D Interactive -->
+          <div>
+            <div class="v3-container" id="portraitViewer">
+              <div class="v3-card">
+                <div class="portrait-img-box">
+                  <img src="assets/portrait.png" alt="Jihed GHANMI - Portrait Corporate">
+                  <div class="floating-pill">
+                    <div class="floating-pill-info">
+                      <h4>Jihed GHANMI</h4>
+                      <p>Data Scientist · PFE Redig.io</p>
+                    </div>
+                    <div class="floating-pill-score">Master MB</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- BARRE DE MÉTRIQUES / STATS IMPACT -->
+        <div class="metrics-bar">
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <strong class="metric-num" data-val="300">300+</strong>
+              <span class="metric-label">Entreprises analysées (EvalitX AI)</span>
+            </div>
+            <div class="metric-item">
+              <strong class="metric-num" data-val="503">503</strong>
+              <span class="metric-label">Titres S&amp;P 500 modélisés (ESG &amp; GARCH)</span>
+            </div>
+            <div class="metric-item">
+              <strong class="metric-num" data-val="4">4</strong>
+              <span class="metric-label">Études de cas complètes bout en bout</span>
+            </div>
+            <div class="metric-item">
+              <strong class="metric-num">Très Bien</strong>
+              <span class="metric-label">Mention Master Data Science (ESCT)</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION À PROPOS -->
+    <section id="apropos" style="padding: 40px 0 70px;">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Vision &amp; Méthodologie</span>
+          <h2 class="section-title">La rigueur mathématique alliée à l'ingénierie IA</h2>
+          <p class="section-desc">
+            Une approche axée sur les résultats mesurables, alliant solide culture financière et déploiement de solutions d'IA générative modernes.
+          </p>
+        </div>
+
+        <div style="background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: clamp(24px, 4vw, 44px); box-shadow: var(--shadow);">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px;">
+            <div>
+              <h3 style="color: var(--royal); font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin-bottom: 12px;">📊 Économétrie &amp; Analyse Multicritère</h3>
+              <p style="color: var(--fg-muted); font-size: 15px;">
+                Formation d'élite en économie appliquée et statistiques avancées (ESCT, Lycée Sadiki). Application de méthodes formelles comme l'AHP de Saaty, les chaînes de Markov et la modélisation économétrique pour transformer des décisions complexes en scores objectifs.
+              </p>
+            </div>
+            <div>
+              <h3 style="color: var(--royal); font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin-bottom: 12px;">🤖 IA Générative, RAG &amp; LLM</h3>
+              <p style="color: var(--fg-muted); font-size: 15px;">
+                Intégration d'architectures RAG (Retrieval-Augmented Generation) et d'APIs LLM (NVIDIA NIM) pour l'automatisation de rapports d'audit stratégique et la création d'assistants intelligents bornés et fiables (zéro hallucination).
+              </p>
+            </div>
+            <div>
+              <h3 style="color: var(--royal); font-family: 'Space Grotesk', sans-serif; font-size: 20px; margin-bottom: 12px;">⚡ Pipelines Data &amp; Restitution Décisionnelle</h3>
+              <p style="color: var(--fg-muted); font-size: 15px;">
+                Construction de chaînes complètes : de l'ingénierie des données (ETL SSIS, Data Warehouse en étoile, cube SSAS MDX) jusqu'aux tableaux de bord de pilotage interactifs sous Power BI et interfaces web modulaires.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION PROJETS / ÉTUDES DE CAS -->
+    <section id="projets" class="projects-section">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Portfolio de Réalisations</span>
+          <h2 class="section-title">4 Études de Cas Phares</h2>
+          <p class="section-desc">
+            Chaque projet est documenté en profondeur avec méthodologie, visualisations interactives 3D, simulateurs et code. Cliquez pour ouvrir la description complète.
+          </p>
+        </div>
+
+        <!-- Filtres interactifs -->
+        <div class="project-filters">
+          <button class="filter-btn active" data-filter="all">Tous les projets (4)</button>
+          <button class="filter-btn" data-filter="ai">IA &amp; LLM / RAG</button>
+          <button class="filter-btn" data-filter="finance">Data Science &amp; Finance</button>
+          <button class="filter-btn" data-filter="bi">Data Engineering &amp; BI</button>
+        </div>
+
+        <!-- Grille des 4 projets -->
+        <div class="projects-grid" id="projectsGrid">
+          
+          <!-- PROJET 1 : EVALITX AI -->
+          <article class="project-card" data-category="ai">
+            <div class="card-top-stripe"></div>
+            <div class="project-card-body">
+              <div class="project-header-meta">
+                <span class="project-cat">IA Générative · Décision Multicritère</span>
+                <span class="project-status">Déployé en production</span>
+              </div>
+
+              <h3 class="project-title">
+                <a href="projets/evalitx-ai.html">EvalitX AI – Audit de Maturité Data &amp; Digitale</a>
+              </h3>
+
+              <p class="project-desc">
+                Conception et développement d'un modèle scientifique synthétisant les référentiels internationaux (ISO, DAMA-DMBOK, CMMI) avec moteur de scoring AHP et génération automatique de rapports par IA générative (LLM, RAG).
+              </p>
+
+              <div class="project-highlight-box">
+                <div class="highlight-item">
+                  <strong>300</strong>
+                  <span>Entreprises validées</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>5 Piliers</strong>
+                  <span>Maturité 360°</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>AHP + RAG</strong>
+                  <span>NVIDIA NIM</span>
+                </div>
+              </div>
+
+              <div class="project-tags">
+                <span>Python</span>
+                <span>AHP Saaty</span>
+                <span>LLM (NVIDIA NIM)</span>
+                <span>RAG</span>
+                <span>React</span>
+                <span>Redig.io</span>
+              </div>
+
+              <a href="projets/evalitx-ai.html" class="btn-case-study">
+                <span>Consulter l'étude de cas complète</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- PROJET 2 : RISQUES ESG S&P 500 -->
+          <article class="project-card" data-category="finance">
+            <div class="card-top-stripe"></div>
+            <div class="project-card-body">
+              <div class="project-header-meta">
+                <span class="project-cat">Finance Durable · Machine Learning</span>
+                <span class="project-status">Recherche ESCT</span>
+              </div>
+
+              <h3 class="project-title">
+                <a href="projets/esg-sp500.html">Risques ESG du S&amp;P 500 &amp; Volatilité Boursière</a>
+              </h3>
+
+              <p class="project-desc">
+                Segmentation des profils de risque ESG, modélisation prédictive du score et prédiction de la volatilité boursière via GARCH et réseaux de neurones profonds sur l'ensemble des 503 entreprises du S&amp;P 500 (Sustainalytics).
+              </p>
+
+              <div class="project-highlight-box">
+                <div class="highlight-item">
+                  <strong>503</strong>
+                  <span>Entreprises S&amp;P</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>5 Ans</strong>
+                  <span>Données boursières</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>GARCH / LSTM</strong>
+                  <span>XGBoost / Keras</span>
+                </div>
+              </div>
+
+              <div class="project-tags">
+                <span>Python</span>
+                <span>pandas / scikit-learn</span>
+                <span>XGBoost</span>
+                <span>TensorFlow</span>
+                <span>GARCH (arch)</span>
+                <span>yfinance</span>
+              </div>
+
+              <a href="projets/esg-sp500.html" class="btn-case-study">
+                <span>Consulter l'étude de cas complète</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- PROJET 3 : DISTRISYS ETL -->
+          <article class="project-card" data-category="bi">
+            <div class="card-top-stripe"></div>
+            <div class="project-card-body">
+              <div class="project-header-meta">
+                <span class="project-cat">Data Engineering · Business Intelligence</span>
+                <span class="project-status">Projet Décisionnel</span>
+              </div>
+
+              <h3 class="project-title">
+                <a href="projets/distrisys-etl.html">Distrisys : De l'ETL au Tableau de Bord</a>
+              </h3>
+
+              <p class="project-desc">
+                Chaîne décisionnelle complète sur la facturation d'une gamme d'électroménager : pipelines SSIS, entrepôt en étoile sous SQL Server, cube OLAP SSAS (MDX) et tableau de bord interactif traçable jusqu'à la source.
+              </p>
+
+              <div class="project-highlight-box">
+                <div class="highlight-item">
+                  <strong>100%</strong>
+                  <span>Traçabilité source</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>Cube SSAS</strong>
+                  <span>Requêtes MDX</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>Modèle Étoile</strong>
+                  <span>Faits &amp; Dimensions</span>
+                </div>
+              </div>
+
+              <div class="project-tags">
+                <span>SQL Server</span>
+                <span>SSIS (ETL)</span>
+                <span>SSAS · MDX</span>
+                <span>SSMS</span>
+                <span>Power BI</span>
+                <span>Star Schema</span>
+              </div>
+
+              <a href="projets/distrisys-etl.html" class="btn-case-study">
+                <span>Consulter l'étude de cas complète</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <!-- PROJET 4 : RAFIQ AL-ULUM -->
+          <article class="project-card" data-category="ai">
+            <div class="card-top-stripe"></div>
+            <div class="project-card-body">
+              <div class="project-header-meta">
+                <span class="project-cat">EdTech · NLP · RTL Native UI</span>
+                <span class="project-status">Prototype Démo</span>
+              </div>
+
+              <h3 class="project-title">
+                <a href="projets/rafiq-al-ulum.html">رفيق العلوم – Compagnon des Sciences (SVT)</a>
+              </h3>
+
+              <p class="project-desc">
+                Assistant pédagogique interactif en arabe (RTL natif) accompagnant les collégiens tunisiens de 9ᵉ année dans le module SVT. RAG sur fiches officielles, interface engageante et explications scientifiques bienveillantes.
+              </p>
+
+              <div class="project-highlight-box">
+                <div class="highlight-item">
+                  <strong>8 Leçons</strong>
+                  <span>Programme officiel</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>100% Arabe</strong>
+                  <span>RTL Natif</span>
+                </div>
+                <div class="highlight-item">
+                  <strong>RAG</strong>
+                  <span>Zero hallucination</span>
+                </div>
+              </div>
+
+              <div class="project-tags">
+                <span>RAG</span>
+                <span>NLP Arabe</span>
+                <span>RTL Design</span>
+                <span>EdTech</span>
+                <span>UI/UX</span>
+                <span>Interactive 3D</span>
+              </div>
+
+              <a href="projets/rafiq-al-ulum.html" class="btn-case-study">
+                <span>Consulter l'étude de cas complète</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION COMPÉTENCES TECHNIQUES -->
+    <section id="competences" class="skills-section">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Boîte à Outils</span>
+          <h2 class="section-title">Compétences Techniques &amp; Outils</h2>
+          <p class="section-desc">
+            Une palette complète couvrant l'analyse statistique, l'IA moderne, l'ingénierie de données et la restitution.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+          
+          <!-- Pilier 1 : Data Science -->
+          <div class="skill-card">
+            <div class="skill-icon-box">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"></path></svg>
+            </div>
+            <h3>Data Science &amp; Stats</h3>
+            <div class="skill-chips">
+              <span>Python</span>
+              <span>pandas</span>
+              <span>numpy</span>
+              <span>scikit-learn</span>
+              <span>XGBoost</span>
+              <span>R (RStudio)</span>
+              <span>AHP (Saaty)</span>
+              <span>Économétrie</span>
+              <span>Séries temporelles</span>
+              <span>Scoring Crédit</span>
+            </div>
+          </div>
+
+          <!-- Pilier 2 : IA & LLM -->
+          <div class="skill-card">
+            <div class="skill-icon-box">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 3.3 2 6.2 5 7.4V20a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.6c3-1.2 5-4.1 5-7.4a8 8 0 0 0-8-8z"></path></svg>
+            </div>
+            <h3>IA &amp; LLM</h3>
+            <div class="skill-chips">
+              <span>Architectures RAG</span>
+              <span>Prompt Engineering</span>
+              <span>NVIDIA NIM APIs</span>
+              <span>NLP</span>
+              <span>TensorFlow / Keras</span>
+              <span>Vibe Coding</span>
+              <span>Génération Rapports</span>
+            </div>
+          </div>
+
+          <!-- Pilier 3 : Data & Cloud -->
+          <div class="skill-card">
+            <div class="skill-icon-box">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"></path><path d="M12 12v9"></path><path d="m8 17 4 4 4-4"></path></svg>
+            </div>
+            <h3>Data &amp; Cloud</h3>
+            <div class="skill-chips">
+              <span>PostgreSQL</span>
+              <span>Supabase</span>
+              <span>SQL Server</span>
+              <span>SSIS (ETL)</span>
+              <span>SSAS (Cube MDX)</span>
+              <span>MySQL Workbench</span>
+              <span>Talend</span>
+              <span>GCP</span>
+              <span>Modèle en Étoile</span>
+            </div>
+          </div>
+
+          <!-- Pilier 4 : BI & Dev -->
+          <div class="skill-card">
+            <div class="skill-icon-box">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </div>
+            <h3>BI &amp; Développement</h3>
+            <div class="skill-chips">
+              <span>Power BI</span>
+              <span>Recharts</span>
+              <span>React</span>
+              <span>Jupyter / Colab</span>
+              <span>Git &amp; GitHub</span>
+              <span>CI/CD (Netlify)</span>
+              <span>Scrum &amp; Jira</span>
+              <span>ISO / DAMA-DMBOK</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION PARCOURS & EXPÉRIENCES -->
+    <section id="parcours" class="timeline-section">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="section-kicker">Expérience &amp; Formation</span>
+          <h2 class="section-title">Parcours Professionnel &amp; Académique</h2>
+          <p class="section-desc">
+            Une trajectoire mêlant recherche appliquée, déploiement industriel en entreprise et rigueur financière.
+          </p>
+        </div>
+
+        <div class="timeline-wrap">
+          
+          <!-- Étape 1 : PFE EvalitX AI Redig.io -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="timeline-date">Février 2026 – Juin 2026</span>
+              <h3 class="timeline-role">Data Scientist – PFE « EvalitX AI »</h3>
+              <p class="timeline-company">Redig.io · Tunis</p>
+              <ul class="timeline-tasks">
+                <li>Conception et développement en autonomie d'un modèle scientifique de maturité data/digitale bâti sur la synthèse de référentiels internationaux (ISO, DAMA-DMBOK, CMMI) et intégrant l'IA générative (LLM, RAG).</li>
+                <li>Construction de bout en bout de l'application (méthodologie de pondération AHP, questionnaire, moteur de scoring) et mise en production avec l'équipe technique.</li>
+                <li>Validation statistique sur un dataset de 300 entreprises tunisiennes via Python avec résultats cohérents avec le marché de référence.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Étape 2 : Assistant Digital Redig.io -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="timeline-date">Novembre 2023 – Septembre 2025</span>
+              <h3 class="timeline-role">Assistant Digital</h3>
+              <p class="timeline-company">Redig.io · Tunis</p>
+              <ul class="timeline-tasks">
+                <li>Réalisation d'études de cas, contact client et suivi des livrables dans un cadre agile (Scrum).</li>
+                <li>Conduite d'études de marketing interne et client pour Redig.io.</li>
+                <li>Vibe coding et intégration de fonctionnalités IA dans des projets de grande envergure.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Étape 3 : Amen Bank -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="timeline-date">Juillet 2023 – Septembre 2023</span>
+              <h3 class="timeline-role">Stagiaire – Scoring de Crédit</h3>
+              <p class="timeline-company">Amen Bank · Tunis</p>
+              <ul class="timeline-tasks">
+                <li>Modélisation du risque de crédit pour le PFE de licence.</li>
+                <li>Nettoyage, traitement et modélisation statistique des données sous R.</li>
+                <li>Visualisation et interprétation des résultats auprès des équipes risque bancaire.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Étape 4 : Master Data Science ESCT -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="timeline-date">2024 – 2026</span>
+              <h3 class="timeline-role">Master Professionnel en Data Science</h3>
+              <p class="timeline-company">École Supérieure de Commerce de Tunis (ESCT) · <strong>Mention Très Bien</strong></p>
+              <ul class="timeline-tasks">
+                <li>Machine Learning, statistiques avancées, data mining, Big Data, Power BI, SQL, Python, R.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Étape 5 : Licence ESCT & Bac Sadiki -->
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card">
+              <span class="timeline-date">2021 – 2024</span>
+              <h3 class="timeline-role">Licence en Ingénierie Économique &amp; Financière</h3>
+              <p class="timeline-company">ESCT (Tunis) · Précédé du Baccalauréat Mathématiques au Lycée Sadiki (2021)</p>
+              <ul class="timeline-tasks">
+                <li>Économie appliquée, économétrie, séries temporelles, modélisation financière.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION CONTACT -->
+    <section id="contact" class="contact-section">
+      <div class="wrap">
+        <div class="contact-grid">
+          <div>
+            <span class="section-kicker">Discutons de vos projets</span>
+            <h2 class="section-title">Prêt à collaborer ?</h2>
+            <p class="section-desc" style="margin-bottom: 28px;">
+              Vous recherchez un profil rigoureux en Data Science, Finance ou IA appliquée pour un poste, un projet ou une mission stratégique ? Je serais ravi d'échanger avec vous.
+            </p>
+
+            <a href="mailto:ghanmijihed33@gmail.com" class="btn-primary" style="display: inline-flex;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              <span>M'envoyer un email directement</span>
+            </a>
+          </div>
+
+          <div class="contact-card-box">
+            <a href="mailto:ghanmijihed33@gmail.com" class="contact-pill">
+              <div class="contact-pill-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </div>
+              <div class="contact-pill-text">
+                <small>Email</small>
+                <strong>ghanmijihed33@gmail.com</strong>
+              </div>
+            </a>
+
+            <a href="tel:+21653713911" class="contact-pill">
+              <div class="contact-pill-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div class="contact-pill-text">
+                <small>Téléphone</small>
+                <strong>+216 53 713 911</strong>
+              </div>
+            </a>
+
+            <div class="contact-pill">
+              <div class="contact-pill-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div class="contact-pill-text">
+                <small>Localisation</small>
+                <strong>Tunis, Tunisie</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <p>© 2026 Jihed GHANMI · Data Scientist | Conçu avec élégance, rigueur et passion.</p>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       JAVASCRIPT INTERACTIF & ANIMATIONS (3D TILT, THEME, SCROLL)
+       ========================================================== -->
+  <script>
+    (function(){
+      // 1. Barre de défilement de lecture (#pg)
+      var pg = document.getElementById('pg');
+      window.addEventListener('scroll', function(){
+        var h = document.documentElement,
+            b = document.body,
+            st = 'scrollTop',
+            sh = 'scrollHeight';
+        var percent = (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
+        if(pg) pg.style.width = percent + '%';
+      }, {passive: true});
+
+      // 2. Gestion du Thème (Dark / Light) avec persistance
+      var themeToggleBtn = document.getElementById('themeToggleBtn');
+      var moonIcon = document.getElementById('moonIcon');
+      var sunIcon = document.getElementById('sunIcon');
+
+      function applyTheme(t) {
+        document.documentElement.setAttribute('data-theme', t);
+        localStorage.setItem('portfolio_theme', t);
+        if (t === 'dark') {
+          moonIcon.style.display = 'none';
+          sunIcon.style.display = 'block';
+        } else {
+          moonIcon.style.display = 'block';
+          sunIcon.style.display = 'none';
+        }
+      }
+
+      var currentTheme = localStorage.getItem('portfolio_theme') || 'light';
+      applyTheme(currentTheme);
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function(){
+          var now = document.documentElement.getAttribute('data-theme');
+          var next = (now === 'dark') ? 'light' : 'dark';
+          applyTheme(next);
+        });
+      }
+
+      // 3. Visionneuse 3D Interactive (Tilt Physics sur le portrait)
+      var portraitViewer = document.getElementById('portraitViewer');
+      if (portraitViewer) {
+        var card = portraitViewer.querySelector('.v3-card');
+        var rx = 0, ry = 0;
+
+        portraitViewer.addEventListener('pointermove', function(e){
+          if (e.pointerType === 'mouse') {
+            var rect = portraitViewer.getBoundingClientRect();
+            var x = (e.clientX - rect.left) / rect.width - 0.5;
+            var y = (e.clientY - rect.top) / rect.height - 0.5;
+            ry = x * 24;
+            rx = -y * 20;
+            card.style.transform = 'rotateX(' + rx + 'deg) rotateY(' + ry + 'deg)';
+          }
+        });
+
+        portraitViewer.addEventListener('pointerleave', function(){
+          card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+          card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        });
+
+        portraitViewer.addEventListener('pointerenter', function(){
+          card.style.transition = 'transform 0.12s ease-out';
+        });
+      }
+
+      // 4. Filtres de projets
+      var filterBtns = document.querySelectorAll('.filter-btn');
+      var projectCards = document.querySelectorAll('.project-card');
+
+      filterBtns.forEach(function(btn){
+        btn.addEventListener('click', function(){
+          filterBtns.forEach(function(b){ b.classList.remove('active'); });
+          btn.classList.add('active');
+
+          var f = btn.getAttribute('data-filter');
+          projectCards.forEach(function(card){
+            if (f === 'all' || card.getAttribute('data-category') === f) {
+              card.style.display = 'flex';
+              card.style.opacity = '1';
+              card.style.transform = 'scale(1)';
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // 5. Animation d'apparition des métriques au scroll
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, {threshold: 0.2});
+
+      document.querySelectorAll('.metric-item, .project-card, .skill-card').forEach(function(el){
+        observer.observe(el);
+      });
+
+    })();
+  </script>
+</body>
+</html>
