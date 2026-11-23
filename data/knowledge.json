@@ -1,0 +1,192 @@
+{
+  "profile": {
+    "name": "Jihed GHANMI",
+    "title": "Data Scientist — Profil Finance, Économétrie & IA appliquée",
+    "location": "Tunis, Tunisie",
+    "email": "ghanmijihed33@gmail.com",
+    "phone": "+216 53 713 911",
+    "address": "33 rue 4107 Cité Eezzouhour, Tunis",
+    "bio": "Data Scientist diplômé d'un Master Data Science (mention Très Bien) et d'une Licence en Ingénierie Économique et Financière à l'ESCT. Auteur d'un modèle scientifique de maturité data/digitale déployé en production chez Redig.io, combinant analyse multicritère (AHP), ingénierie statistique et intégration IA générative (LLM, RAG). Solide culture financière et économétrique, orientée résultats mesurables et rigueur méthodologique."
+  },
+  "education": [
+    {
+      "degree": "Master Professionnel en Data Science",
+      "institution": "École Supérieure de Commerce de Tunis (ESCT)",
+      "period": "2024 – 2026",
+      "honors": "Mention Très Bien",
+      "skills_learned": "Machine Learning, statistiques avancées, data mining, Big Data, Power BI, Python, R (RStudio), SQL, Jupyter, MySQL Workbench, Gestion agile Scrum/Jira."
+    },
+    {
+      "degree": "Licence en Ingénierie Économique et Financière",
+      "institution": "École Supérieure de Commerce de Tunis (ESCT)",
+      "period": "2021 – 2024",
+      "details": "Économie appliquée, économétrie, séries temporelles. PFE : Modélisation du scoring de crédit bancaire (stage Amen Bank)."
+    },
+    {
+      "degree": "Baccalauréat Mathématiques",
+      "institution": "Lycée Sadiki",
+      "period": "2021"
+    }
+  ],
+  "experiences": [
+    {
+      "role": "Data Scientist – Projet de Fin d'Études « EvalitX AI »",
+      "company": "Redig.io, Tunis",
+      "period": "Février 2026 – Juin 2026",
+      "description": "Conception et développement en autonomie d'un modèle scientifique de maturité data/digitale, bâti sur la synthèse de référentiels internationaux (ISO, DAMA-DMBOK, CMMI) et intégrant l'IA générative (LLM, RAG) pour la génération automatique de rapports d'évaluation stratégique. Construction de bout en bout de l'application (méthodologie de pondération AHP Saaty, questionnaire dynamique, moteur de scoring) et mise en production avec l'équipe technique Redig.io. Validation statistique du modèle sur un dataset de 300 entreprises tunisiennes via Python avec résultats cohérents avec le marché de référence."
+    },
+    {
+      "role": "Assistant digital",
+      "company": "Redig.io, Tunis",
+      "period": "Novembre 2023 – Septembre 2025",
+      "description": "Réalisation d'études de cas, contact client et suivi des livrables dans un cadre agile Scrum. Conduite d'études de marketing interne et client pour Redig.io. Vibe coding et intégration de fonctionnalités IA dans des projets de grande envergure, en support technique."
+    },
+    {
+      "role": "Stagiaire – Scoring de crédit",
+      "company": "Amen Bank, Tunis",
+      "period": "Juillet 2023 – Septembre 2023",
+      "description": "Modélisation du risque de crédit bancaire pour le PFE de licence. Nettoyage, traitement et modélisation statistique de données sous R. Visualisation et interprétation des résultats auprès des équipes risque."
+    }
+  ],
+  "projects": [
+    {
+      "id": "evalitx-ai",
+      "title": "EvalitX AI – Évaluation de la maturité data & digitale",
+      "category": "IA Générative, LLM, RAG & AHP",
+      "status": "Déployé en production chez Redig.io",
+      "link": "projets/evalitx-ai.html",
+      "summary": "Outil scientifique d'audit de maturité digitale et data pour entreprises. Combine une pondération Saaty (AHP) synthétisant ISO, DAMA-DMBOK et CMMI avec un pipeline RAG et l'API LLM NVIDIA NIM pour générer instantanément des rapports d'audit personnalisés et actionnables.",
+      "metrics": "300 entreprises tunisiennes benchmarkées, 5 piliers évalués, génération de rapports automatisée.",
+      "technologies": [
+        "Python",
+        "AHP (Saaty)",
+        "LLM (NVIDIA NIM)",
+        "RAG",
+        "React",
+        "TypeScript",
+        "Supabase"
+      ]
+    },
+    {
+      "id": "esg-sp500",
+      "title": "Analyse des risques ESG du S&P 500 & Volatilité Boursière",
+      "category": "Data Science & Finance Durable",
+      "status": "Projet Académique ESCT",
+      "link": "projets/esg-sp500.html",
+      "summary": "Étude quantitative approfondie sur les 503 entreprises du S&P 500 (données Sustainalytics). Segmentation des profils de risque, modélisation prédictive du score ESG via XGBoost/LightGBM, et prédiction de la volatilité financière avec modèles GARCH et réseaux de neurones profonds TensorFlow/Keras.",
+      "metrics": "503 entreprises analysées, 15 variables ESG, 5 ans d'historique de cours boursiers.",
+      "technologies": [
+        "Python",
+        "pandas",
+        "scikit-learn",
+        "XGBoost",
+        "LightGBM",
+        "TensorFlow / Keras",
+        "arch (GARCH)",
+        "yfinance"
+      ]
+    },
+    {
+      "id": "distrisys-etl",
+      "title": "Distrisys – De l'ETL au Tableau de Bord Décisionnel",
+      "category": "Data Engineering & Business Intelligence",
+      "status": "Projet Décisionnel Complet",
+      "link": "projets/distrisys-etl.html",
+      "summary": "Conception d'une chaîne décisionnelle de bout en bout sur les données de facturation d'électroménager : extraction et nettoyage automatisés avec SSIS, modélisation en étoile sous SQL Server, cube multidimensionnel SSAS (MDX) et tableau de bord de pilotage interactif traçable jusqu'à la source.",
+      "metrics": "100% de traçabilité des chiffres, 2 ans d'historique, cube OLAP temps réel.",
+      "technologies": [
+        "SQL Server",
+        "SSIS (ETL)",
+        "SSAS (Cube MDX)",
+        "SSMS",
+        "Modélisation en Étoile",
+        "Power BI"
+      ]
+    },
+    {
+      "id": "rafiq-al-ulum",
+      "title": "رفيق العلوم (Compagnon des Sciences) – Assistant Pédagogique SVT",
+      "category": "EdTech, NLP & RTL Native UI",
+      "status": "Prototype Démo",
+      "link": "projets/rafiq-al-ulum.html",
+      "summary": "Assistant éducatif intelligent conçu en langue arabe (RTL natif) pour accompagner les collégiens tunisiens de 9ᵉ année dans le module de SVT. Architecture RAG sur les fiches du programme officiel, interface aérée et pédagogie bienveillante sans hallucination.",
+      "metrics": "8 leçons couvertes, 100% arabe RTL natif, RAG déterministe.",
+      "technologies": [
+        "RAG",
+        "NLP Arabe",
+        "RTL Design",
+        "UI/UX",
+        "JavaScript",
+        "Prototype Démo"
+      ]
+    }
+  ],
+  "skills": {
+    "data_science": [
+      "Python (pandas, numpy, scipy, seaborn, scikit-learn, XGBoost, LightGBM)",
+      "R (RStudio)",
+      "SQL",
+      "Modélisation multicritère AHP (Saaty)",
+      "Économétrie",
+      "Séries temporelles"
+    ],
+    "ai_llm": [
+      "Architectures RAG (Retrieval-Augmented Generation)",
+      "Prompt Engineering",
+      "APIs LLM (NVIDIA NIM)",
+      "NLP",
+      "TensorFlow / Keras",
+      "Vibe Coding"
+    ],
+    "data_engineering": [
+      "PostgreSQL",
+      "Supabase",
+      "MySQL Workbench",
+      "SQL Server",
+      "SSIS (ETL)",
+      "SSAS (Cube MDX)",
+      "Modélisation en étoile",
+      "GCP",
+      "Talend"
+    ],
+    "bi_dev": [
+      "Power BI",
+      "Recharts",
+      "React",
+      "TypeScript",
+      "TanStack",
+      "Jupyter",
+      "Google Colab",
+      "Git / GitHub",
+      "CI/CD (Netlify)"
+    ],
+    "methodologies": [
+      "Scrum",
+      "Jira",
+      "Référentiels ISO, DAMA-DMBOK, CMMI"
+    ],
+    "languages": [
+      "Arabe : Langue maternelle",
+      "Français : Courant",
+      "Anglais : Bon niveau"
+    ]
+  },
+  "faq": [
+    {
+      "question": "Quel est le profil principal de Jihed ?",
+      "answer": "Jihed GHANMI est un Data Scientist spécialisé en Finance, Économétrie et IA appliquée. Il allie une rigueur mathématique et statistique (mention Très Bien à l'ESCT) à une expertise concrète dans le déploiement de modèles de Machine Learning et d'IA générative (LLM, RAG)."
+    },
+    {
+      "question": "Quelles sont les disponibilités de Jihed ?",
+      "answer": "Jihed est diplômé et immédiatement disponible pour des opportunités en CDI, CDD ou missions Data Science / IA / Finance, que ce soit en Tunisie, en France, ou à l'international (présentiel ou remote)."
+    },
+    {
+      "question": "A-t-il de l'expérience concrète en entreprise ?",
+      "answer": "Oui ! Il a effectué son PFE chez Redig.io où il a conçu et déployé en production l'outil EvalitX AI validé sur 300 entreprises. Il a également été Assistant Digital chez Redig.io pendant près de 2 ans et a réalisé un stage chez Amen Bank en scoring de crédit bancaire."
+    },
+    {
+      "question": "Comment le contacter ?",
+      "answer": "Vous pouvez contacter Jihed directement par email à ghanmijihed33@gmail.com ou par téléphone au +216 53 713 911."
+    }
+  ]
+}

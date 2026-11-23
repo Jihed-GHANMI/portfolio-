@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Backoffice IA &amp; RAG · Jihed GHANMI</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%2310b981'/><text x='50' y='65' font-size='38' font-family='sans-serif' font-weight='800' fill='%23070e0b' text-anchor='middle'>⚡</text></svg>">
+
+  <!-- Polices -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #070e0b;
+      --card: #0d1a15;
+      --card-hover: #12221c;
+      --muted: #13241d;
+      --border: #1b3529;
+      --fg: #edfbf4;
+      --fg-muted: #8ea89b;
+      --royal: #10b981;
+      --royal-dark: #059669;
+      --gold: #fbbf24;
+      --danger: #ef4444;
+      --shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+    }
+    :root[data-theme="light"] {
+      --bg: #f9fbf9;
+      --card: #ffffff;
+      --card-hover: #f3f7f4;
+      --muted: #edf4f0;
+      --border: #dbe7df;
+      --fg: #0d1e17;
+      --fg-muted: #496155;
+      --royal: #0d5c46;
+      --royal-dark: #084232;
+      --gold: #c59b27;
+      --danger: #dc2626;
+      --shadow: 0 16px 40px -10px rgba(13, 40, 30, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Écran de verrouillage / Authentification PIN */
+    #authOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 14, 11, 0.95);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      padding: 20px;
+    }
+    .auth-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 32px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .auth-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--royal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .auth-card h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .auth-card p {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 24px;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 16px;
+      font-family: inherit;
+      text-align: center;
+      letter-spacing: 0.2em;
+      margin-bottom: 18px;
+      outline: none;
+    }
+    .auth-input:focus { border-color: var(--royal); }
+
+    /* Layout Dashboard Principal */
+    .dashboard-layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* Barre latérale */
+    aside {
+      width: 280px;
+      background: var(--card);
+      border-right: 1px solid var(--border);
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 36px;
+      text-decoration: none;
+      color: var(--fg);
+    }
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--royal);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .brand h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+    .brand small {
+      font-size: 11.5px;
+      color: var(--royal);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .nav-tabs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+    }
+    .tab-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--fg-muted);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .tab-btn:hover {
+      background: var(--muted);
+      color: var(--fg);
+    }
+    .tab-btn.active {
+      background: var(--royal);
+      color: #ffffff;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Contenu Principal */
+    main {
+      flex-grow: 1;
+      padding: 36px 40px;
+      overflow-y: auto;
+      max-width: 1100px;
+    }
+
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .top-bar h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: none;
+      font-family: inherit;
+    }
+    .btn-royal {
+      background: var(--royal);
+      color: #ffffff;
+    }
+    .btn-royal:hover {
+      filter: brightness(1.1);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--fg);
+    }
+    .btn-outline:hover {
+      background: var(--muted);
+      border-color: var(--royal);
+    }
+
+    /* Cartes de sections */
+    .card-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+    }
+    .card-panel h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 19px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-panel p.desc {
+      font-size: 14px;
+      color: var(--fg-muted);
+      margin-bottom: 22px;
+    }
+
+    /* Formulaire Controls */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--fg);
+    }
+    .form-group small {
+      display: block;
+      font-size: 12px;
+      color: var(--fg-muted);
+      margin-top: 5px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      color: var(--fg);
+      font-size: 14.5px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-control:focus {
+      border-color: var(--royal);
+    }
+    textarea.form-control {
+      min-height: 180px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    /* Tableau / Liste Base RAG */
+    .rag-item {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .rag-item h4 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .rag-item p {
+      font-size: 13.5px;
+      color: var(--fg-muted);
+      max-height: 60px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .badge-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--royal);
+      margin-bottom: 6px;
+    }
+
+    /* Playground de Test */
+    .playground-box {
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .playground-messages {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .msg {
+      max-width: 82%;
+      padding: 14px 18px;
+      border-radius: 16px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+    .msg-user {
+      align-self: flex-end;
+      background: var(--royal);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-ai {
+      align-self: flex-start;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+    .msg-sources {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px dashed var(--border);
+      font-size: 12px;
+      color: var(--royal);
+      font-weight: 600;
+    }
+    .playground-input-row {
+      display: flex;
+      gap: 10px;
+      padding: 16px;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 14px 22px;
+      border-radius: 12px;
+      background: var(--royal);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      display: none;
+      z-index: 10000;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Écran de Verrouillage PIN -->
+  <div id="authOverlay">
+    <div class="auth-card">
+      <div class="auth-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+      <h2>Accès Backoffice Privé</h2>
+      <p>Entrez votre code d'accès administrateur pour gérer l'agent IA et la base RAG.</p>
+      
+      <form id="authForm" onsubmit="event.preventDefault(); verifyPin();">
+        <input type="password" id="pinInput" class="auth-input" placeholder="••••" maxlength="8" autofocus>
+        <button type="submit" class="btn btn-royal" style="width: 100%; justify-content: center;">
+          <span>Déverrouiller</span>
+        </button>
+      </form>
+      <p style="font-size: 11.5px; color: var(--fg-muted); margin-top: 18px;">
+        Code par défaut : <strong>1234</strong> (modifiable à tout moment dans l'onglet Paramètres).
+      </p>
+    </div>
+  </div>
+
+  <!-- Dashboard Principal -->
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside>
+      <a href="index.html" class="brand">
+        <div class="brand-badge">JG</div>
+        <div>
+          <h1>Jihed GHANMI</h1>
+          <small>IA &amp; RAG Backoffice</small>
+        </div>
+      </a>
+
+      <ul class="nav-tabs">
+        <li>
+          <button class="tab-btn active" onclick="switchTab('tab-api')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>
+            <span>Clé API &amp; Modèle</span>
+          </button>
+        </li>
+        <li>
+          <button class="tab-btn" onclick="switchTab('tab-prompt')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path></svg>
+            <span>System Prompt</span>
+          </button>
+        </li>
+        <li>
+          <button class="tab-btn" onclick="switchTab('tab-rag')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            <span>Base RAG (Learning)</span>
+          </button>
+        </li>
+        <li>
+          <button class="tab-btn" onclick="switchTab('tab-test')">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span>Playground de Test</span>
+          </button>
+        </li>
+      </ul>
+
+      <div style="margin-top: auto; padding-top: 20px; border-top: 1px solid var(--border);">
+        <a href="index.html" class="btn btn-outline" style="width: 100%; justify-content: center;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"></path></svg>
+          <span>Voir le Portfolio</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+      
+      <!-- Top Bar -->
+      <div class="top-bar">
+        <div>
+          <h2 id="pageTitle">Configuration de l'IA</h2>
+          <p style="color: var(--fg-muted); font-size: 14px;">Paramétrez le comportement, le modèle et les sources de votre agent.</p>
+        </div>
+
+        <button class="btn btn-royal" onclick="saveAllSettings()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          <span>Enregistrer les modifications</span>
+        </button>
+      </div>
+
+      <!-- ONGLET 1 : CONFIG API -->
+      <section id="tab-api" class="tab-content">
+        <div class="card-panel">
+          <h3>⚡ Fournisseur d'IA &amp; Clé API</h3>
+          <p class="desc">Sélectionnez votre moteur d'IA gratuit. Pour le déploiement sur Netlify, vous pourrez également renseigner cette clé dans les variables d'environnement Netlify.</p>
+
+          <div class="form-group">
+            <label>Fournisseur de Modèle (Gratuit)</label>
+            <select id="apiProvider" class="form-control" onchange="updateModelOptions()">
+              <option value="gemini">Google Gemini API (Recommandé · Gratuit)</option>
+              <option value="groq">Groq Cloud API (Llama-3 · Ultra Rapide · Gratuit)</option>
+              <option value="custom">NVIDIA NIM / Autre</option>
+            </select>
+            <small>Les deux options offrent un quota gratuit généreux sans carte bancaire.</small>
+          </div>
+
+          <div class="form-group">
+            <label>Clé API Secrète</label>
+            <input type="password" id="apiKey" class="form-control" placeholder="Collez votre clé ici (ex: AIzaSy... ou gsk_...)">
+            <small>
+              Obtenez une clé gratuite en 30 secondes :
+              <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--royal); font-weight: 600;">Google AI Studio</a> ou
+              <a href="https://console.groq.com/keys" target="_blank" style="color: var(--royal); font-weight: 600;">Groq Cloud Console</a>.
+            </small>
+          </div>
+
+          <div class="form-group">
+            <label>Nom du Modèle</label>
+            <input type="text" id="apiModel" class="form-control" value="gemini-1.5-flash">
+            <small>Exemples : <code>gemini-1.5-flash</code>, <code>llama-3.3-70b-versatile</code>, etc.</small>
+          </div>
+
+          <div class="form-group">
+            <label>Température de Génération : <span id="tempVal" style="color: var(--royal);">0.35</span></label>
+            <input type="range" id="apiTemp" min="0" max="1" step="0.05" value="0.35" style="width: 100%; accent-color: var(--royal);" oninput="document.getElementById('tempVal').innerText = this.value">
+            <small>Une température basse (0.2 - 0.4) garantit des réponses strictes, véridiques et sans hallucination.</small>
+          </div>
+        </div>
+
+        <div class="card-panel">
+          <h3>🔒 Sécurité du Backoffice</h3>
+          <p class="desc">Modifiez le code PIN requis pour accéder à cette interface.</p>
+          <div class="form-group" style="max-width: 300px;">
+            <label>Nouveau code PIN</label>
+            <input type="password" id="adminPin" class="form-control" value="1234">
+          </div>
+        </div>
+      </section>
+
+      <!-- ONGLET 2 : SYSTEM PROMPT -->
+      <section id="tab-prompt" class="tab-content" style="display: none;">
+        <div class="card-panel">
+          <h3>✍️ Consignes du Modèle (System Prompt)</h3>
+          <p class="desc">Définissez la personnalité, le ton et les règles strictes que l'agent doit respecter devant les recruteurs.</p>
+
+          <div class="form-group">
+            <textarea id="systemPromptText" class="form-control"></textarea>
+          </div>
+
+          <button class="btn btn-outline" onclick="resetDefaultPrompt()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6M21.5 22v-6h-6"></path><path d="M22 11.5A10 10 0 0 0 3.2 7.2L2.5 8M2 12.5a10 10 0 0 0 18.8 4.2l.7-.7"></path></svg>
+            <span>Rétablir le prompt par défaut</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ONGLET 3 : BASE RAG (LEARNING) -->
+      <section id="tab-rag" class="tab-content" style="display: none;">
+        <div class="card-panel">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+            <div>
+              <h3>📚 Fiches de Connaissances RAG</h3>
+              <p class="desc" style="margin-bottom: 0;">L'agent puise directement dans ces fiches pour composer ses réponses.</p>
+            </div>
+            <button class="btn btn-royal" onclick="openAddChunkModal()">
+              <span>+ Ajouter une fiche</span>
+            </button>
+          </div>
+
+          <div id="ragChunksList">
+            <!-- Liste injectée en JS -->
+          </div>
+
+          <div style="margin-top: 24px; display: flex; gap: 12px;">
+            <button class="btn btn-outline" onclick="exportKnowledgeJSON()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              <span>Télécharger knowledge.json mis à jour</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ONGLET 4 : PLAYGROUND DE TEST -->
+      <section id="tab-test" class="tab-content" style="display: none;">
+        <div class="card-panel">
+          <h3>🧪 Bac à sable de Test en Direct</h3>
+          <p class="desc">Testez les réponses de l'agent en temps réel et vérifiez les sources RAG extraites.</p>
+
+          <div class="playground-box">
+            <div id="playMessages" class="playground-messages">
+              <div class="msg msg-ai">
+                Bonjour Jihed ! Posez-moi n'importe quelle question pour tester comment je répondrai à un recruteur.
+              </div>
+            </div>
+
+            <form class="playground-input-row" onsubmit="event.preventDefault(); sendPlaygroundMsg();">
+              <input type="text" id="playInput" class="form-control" placeholder="Posez une question de test (ex: Parle-moi de ton projet EvalitX AI)...">
+              <button type="submit" class="btn btn-royal">Envoyer</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="toast" class="toast">Paramètres enregistrés avec succès !</div>
+
+  <script>
+    // System Prompt par défaut
+    var defaultPrompt = `Tu es l'assistant IA officiel de Jihed GHANMI, Data Scientist diplômé de l'ESCT (Mention Très Bien).
+Ton objectif est de répondre aux questions des recruteurs, managers et collaborateurs avec professionnalisme, clarté, courtoisie et rigueur technique.
+Règles strictes :
+1. Base TOUTES tes affirmations uniquement sur les informations et fiches RAG fournies dans le contexte.
+2. Si une information n'est pas mentionnée dans le contexte, dis poliment que tu ne disposes pas de ce détail et invite le recruteur à contacter Jihed directement par email à ghanmijihed33@gmail.com ou téléphone au +216 53 713 911.
+3. Reste concis (2 à 3 paragraphes maximum), utilise un formatage soigné en Markdown (avec des puces si pertinent).
+4. Mets en avant ses points forts : rigueur en économétrie & AHP, architectures RAG / LLM en production (EvalitX AI), Finance durable (ESG S&P 500) et Business Intelligence (Distrisys).`;
+
+    var knowledgeData = null;
+
+    // Vérification du PIN
+    function verifyPin() {
+      var pin = document.getElementById('pinInput').value;
+      var savedPin = localStorage.getItem('admin_pin') || '1234';
+      if (pin === savedPin) {
+        document.getElementById('authOverlay').style.display = 'none';
+        sessionStorage.setItem('admin_logged', 'true');
+      } else {
+        alert('Code PIN incorrect.');
+      }
+    }
+
+    if (sessionStorage.getItem('admin_logged') === 'true') {
+      document.getElementById('authOverlay').style.display = 'none';
+    }
+
+    // Gestion des onglets
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(function(el){ el.style.display = 'none'; });
+      document.querySelectorAll('.tab-btn').forEach(function(btn){ btn.classList.remove('active'); });
+      
+      var target = document.getElementById(tabId);
+      if (target) target.style.display = 'block';
+      
+      var titles = {
+        'tab-api': "Configuration de l'IA",
+        'tab-prompt': "System Prompt & Persona",
+        'tab-rag': "Base de Connaissances (RAG)",
+        'tab-test': "Playground de Test"
+      };
+      document.getElementById('pageTitle').innerText = titles[tabId] || 'Backoffice';
+      event.currentTarget.classList.add('active');
+    }
+
+    function updateModelOptions() {
+      var p = document.getElementById('apiProvider').value;
+      var m = document.getElementById('apiModel');
+      if (p === 'gemini') m.value = 'gemini-1.5-flash';
+      else if (p === 'groq') m.value = 'llama-3.3-70b-versatile';
+      else m.value = 'mistral-large';
+    }
+
+    // Chargement des données
+    async function initSettings() {
+      // 1. Settings
+      var savedKey = localStorage.getItem('admin_api_key') || '';
+      var savedProvider = localStorage.getItem('admin_provider') || 'gemini';
+      var savedModel = localStorage.getItem('admin_model') || 'gemini-1.5-flash';
+      var savedTemp = localStorage.getItem('admin_temp') || '0.35';
+      var savedPrompt = localStorage.getItem('admin_prompt') || defaultPrompt;
+      var savedPin = localStorage.getItem('admin_pin') || '1234';
+
+      document.getElementById('apiKey').value = savedKey;
+      document.getElementById('apiProvider').value = savedProvider;
+      document.getElementById('apiModel').value = savedModel;
+      document.getElementById('apiTemp').value = savedTemp;
+      document.getElementById('tempVal').innerText = savedTemp;
+      document.getElementById('systemPromptText').value = savedPrompt;
+      document.getElementById('adminPin').value = savedPin;
+
+      // 2. Base RAG
+      try {
+        var res = await fetch('data/knowledge.json');
+        knowledgeData = await res.json();
+        renderRAGChunks();
+      } catch(e) {
+        console.error("Erreur chargement knowledge.json:", e);
+      }
+    }
+
+    function renderRAGChunks() {
+      var container = document.getElementById('ragChunksList');
+      if (!knowledgeData) return;
+      var html = '';
+
+      // Profil
+      html += createChunkCard("Profil & Contact", "Général", knowledgeData.profile.bio + " | Email: " + knowledgeData.profile.email);
+
+      // Éducation
+      knowledgeData.education.forEach(function(ed){
+        html += createChunkCard(ed.degree + " (" + ed.institution + ")", "Formation", ed.honors + " · " + ed.skills_learned);
+      });
+
+      // Expériences
+      knowledgeData.experiences.forEach(function(exp){
+        html += createChunkCard(exp.role + " - " + exp.company, "Expérience", exp.description);
+      });
+
+      // Projets
+      knowledgeData.projects.forEach(function(pj){
+        html += createChunkCard(pj.title, "Projet Phare", pj.summary + " [Technos: " + pj.technologies.join(', ') + "]");
+      });
+
+      // FAQ
+      knowledgeData.faq.forEach(function(q){
+        html += createChunkCard("FAQ: " + q.question, "FAQ", q.answer);
+      });
+
+      container.innerHTML = html;
+    }
+
+    function createChunkCard(title, category, content) {
+      return `
+        <div class="rag-item">
+          <div style="flex-grow: 1;">
+            <span class="badge-tag">${category}</span>
+            <h4>${title}</h4>
+            <p>${content}</p>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveAllSettings() {
+      localStorage.setItem('admin_api_key', document.getElementById('apiKey').value.trim());
+      localStorage.setItem('admin_provider', document.getElementById('apiProvider').value);
+      localStorage.setItem('admin_model', document.getElementById('apiModel').value.trim());
+      localStorage.setItem('admin_temp', document.getElementById('apiTemp').value);
+      localStorage.setItem('admin_prompt', document.getElementById('systemPromptText').value.trim());
+      localStorage.setItem('admin_pin', document.getElementById('adminPin').value.trim());
+
+      var toast = document.getElementById('toast');
+      toast.style.display = 'block';
+      setTimeout(function(){ toast.style.display = 'none'; }, 2500);
+    }
+
+    function resetDefaultPrompt() {
+      if (confirm('Voulez-vous rétablir le prompt système par défaut ?')) {
+        document.getElementById('systemPromptText').value = defaultPrompt;
+      }
+    }
+
+    function exportKnowledgeJSON() {
+      if(!knowledgeData) return;
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(knowledgeData, null, 2));
+      var dlAnchor = document.createElement('a');
+      dlAnchor.setAttribute("href", dataStr);
+      dlAnchor.setAttribute("download", "knowledge.json");
+      dlAnchor.click();
+    }
+
+    // Playground Logic
+    async function sendPlaygroundMsg() {
+      var inp = document.getElementById('playInput');
+      var q = inp.value.trim();
+      if (!q) return;
+
+      var box = document.getElementById('playMessages');
+      var userMsg = document.createElement('div');
+      userMsg.className = 'msg msg-user';
+      userMsg.innerText = q;
+      box.appendChild(userMsg);
+      inp.value = '';
+
+      var aiMsg = document.createElement('div');
+      aiMsg.className = 'msg msg-ai';
+      aiMsg.innerHTML = '<em>Recherche dans les documents RAG et génération de la réponse...</em>';
+      box.appendChild(aiMsg);
+      box.scrollTop = box.scrollHeight;
+
+      // Récupération RAG locale
+      var chunks = retrieveTopChunks(q);
+
+      try {
+        var key = document.getElementById('apiKey').value.trim();
+        var provider = document.getElementById('apiProvider').value;
+        var model = document.getElementById('apiModel').value.trim();
+        var prompt = document.getElementById('systemPromptText').value.trim();
+
+        var res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: q,
+            contextChunks: chunks,
+            apiKeyOverride: key,
+            providerOverride: provider,
+            modelOverride: model,
+            systemPromptOverride: prompt
+          })
+        });
+
+        var data = await res.json();
+        var reply = data.reply || data.error || "Aucune réponse reçue.";
+        var sources = data.sources && data.sources.length ? `<div class="msg-sources">📄 Sources consultées : ${data.sources.join(', ')}</div>` : '';
+        
+        aiMsg.innerHTML = reply.replace(/\n/g, '<br>') + sources;
+      } catch (err) {
+        // Fallback local direct
+        if (chunks.length > 0) {
+          aiMsg.innerHTML = `<strong>Réponse basée sur le RAG :</strong><br>${chunks[0].content}<div class="msg-sources">📄 Source : ${chunks[0].title}</div>`;
+        } else {
+          aiMsg.innerHTML = "Une erreur est survenue lors de la connexion à l'API.";
+        }
+      }
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function retrieveTopChunks(query) {
+      if (!knowledgeData) return [];
+      var qWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+      var allChunks = [];
+
+      allChunks.push({ title: "Profil & Bio", content: knowledgeData.profile.bio + " Contact: " + knowledgeData.profile.email });
+      knowledgeData.education.forEach(ed => allChunks.push({ title: ed.degree, content: ed.institution + " " + ed.honors + " " + ed.skills_learned }));
+      knowledgeData.experiences.forEach(exp => allChunks.push({ title: exp.role, content: exp.company + " " + exp.description }));
+      knowledgeData.projects.forEach(pj => allChunks.push({ title: pj.title, content: pj.summary + " " + pj.metrics }));
+      knowledgeData.faq.forEach(f => allChunks.push({ title: f.question, content: f.answer }));
+
+      var scored = allChunks.map(c => {
+        var score = 0;
+        var text = (c.title + " " + c.content).toLowerCase();
+        qWords.forEach(w => {
+          if (text.includes(w)) score += (c.title.toLowerCase().includes(w) ? 3 : 1);
+        });
+        return { chunk: c, score: score };
+      });
+
+      scored.sort((a,b) => b.score - a.score);
+      return scored.slice(0, 3).filter(s => s.score > 0).map(s => s.chunk);
+    }
+
+    document.addEventListener('DOMContentLoaded', initSettings);
+  </script>
+</body>
+</html>
