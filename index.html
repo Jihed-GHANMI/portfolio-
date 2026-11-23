@@ -2092,7 +2092,7 @@
   </script>
 
   <!-- BOUTON FLOTTANT DU CHATBOT IA -->
-  <button id="aiChatTrigger" class="ai-chat-trigger" title="Discuter avec l'IA de Jihed">
+  <button id="aiChatTrigger" class="ai-chat-trigger" onclick="toggleAiChat()" title="Discuter avec l'IA de Jihed">
     <span class="ai-sparkle-dot"></span>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
@@ -2110,7 +2110,7 @@
           <span>● RAG Activé · Précis &amp; Vérifié</span>
         </div>
       </div>
-      <button id="aiCloseBtn" class="ai-close-btn" title="Fermer">
+      <button id="aiCloseBtn" class="ai-close-btn" onclick="document.getElementById('aiChatModal').classList.remove('open')" title="Fermer">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
       </button>
     </div>
@@ -2136,5 +2136,203 @@
       </button>
     </form>
   </div>
+
+  <!-- SCRIPT DU CHATBOT IA & RAG -->
+  <script>
+    (function(){
+      // Données de connaissances RAG locales
+      var ragData = null;
+
+      // Charger knowledge.json
+      fetch('data/knowledge.json')
+        .then(function(res){ return res.json(); })
+        .then(function(data){
+          ragData = data;
+          console.log("Base RAG chargée avec succès :", data.projects.length, "projets.");
+        })
+        .catch(function(err){
+          console.warn("Impossible de charger data/knowledge.json en direct, utilisation du fallback interne:", err);
+          // Fallback statique immédiat si fichier local bloqué par CORS file://
+          ragData = {
+            profile: {
+              name: "Jihed GHANMI",
+              title: "Data Scientist — Profil Finance, Économétrie & IA appliquée",
+              email: "ghanmijihed33@gmail.com",
+              phone: "+216 53 713 911",
+              location: "Tunis, Tunisie",
+              bio: "Data Scientist diplômé d'un Master Data Science (mention Très Bien) et d'une Licence en Ingénierie Économique et Financière à l'ESCT. Auteur d'un modèle scientifique de maturité data/digitale déployé en production chez Redig.io, combinant analyse multicritère (AHP), ingénierie statistique et intégration IA générative (LLM, RAG)."
+            },
+            education: [
+              { degree: "Master Pro en Data Science (ESCT)", honors: "Mention Très Bien (2024-2026)", skills: "Machine Learning, Big Data, Power BI, Python, R, SQL" },
+              { degree: "Licence Ingénierie Éco & Financière (ESCT)", honors: "2021-2024", skills: "Économétrie, séries temporelles, scoring crédit" }
+            ],
+            experiences: [
+              { role: "Data Scientist PFE (Redig.io)", desc: "Conception du modèle EvalitX AI validé sur 300 entreprises avec IA générative (LLM, RAG) et scoring AHP Saaty." },
+              { role: "Assistant Digital (Redig.io)", desc: "Études de cas, vibe coding, contact client et support technique IA." },
+              { role: "Stagiaire Scoring Crédit (Amen Bank)", desc: "Modélisation du risque de crédit sous R." }
+            ],
+            projects: [
+              { title: "EvalitX AI", summary: "Audit de maturité data & digitale basé sur ISO/CMMI/DAMA, pondération AHP et génération automatique de rapports par LLM/RAG (NVIDIA NIM). Benchmark 300 entreprises." },
+              { title: "Risques ESG S&P 500", summary: "Segmentation ESG, modélisation XGBoost et prédiction de volatilité boursière via GARCH et deep learning sur 503 entreprises." },
+              { title: "Distrisys ETL", summary: "Chaîne décisionnelle complète : ETL SSIS, entrepôt en étoile SQL Server, cube OLAP SSAS (MDX) et tableau de bord Power BI." },
+              { title: "Rafiq Al-Ulum", summary: "Assistant pédagogique EdTech en arabe RTL pour la 9e année SVT avec architecture RAG." }
+            ],
+            faq: [
+              { question: "Contact", answer: "Email: ghanmijihed33@gmail.com | Téléphone: +216 53 713 911 | Tunis, Tunisie" },
+              { question: "Disponibilité", answer: "Jihed est diplômé et immédiatement disponible pour des opportunités en Data Science, IA ou Finance quantitative." }
+            ]
+          };
+        });
+
+      // Éléments DOM
+      var trigger = document.getElementById('aiChatTrigger');
+      var modal = document.getElementById('aiChatModal');
+      var closeBtn = document.getElementById('aiCloseBtn');
+      var chatForm = document.getElementById('chatForm');
+      var chatInput = document.getElementById('chatInput');
+      var chatBox = document.getElementById('chatMessages');
+
+      window.toggleAiChat = function() {
+        if (!modal) return;
+        modal.classList.toggle('open');
+        if (modal.classList.contains('open') && chatInput) {
+          setTimeout(function(){ chatInput.focus(); }, 150);
+        }
+      };
+
+      if (trigger) {
+        trigger.onclick = toggleAiChat;
+      }
+      if (closeBtn) {
+        closeBtn.onclick = function() {
+          if (modal) modal.classList.remove('open');
+        };
+      }
+
+      window.askSuggestion = function(text) {
+        if (chatInput) {
+          chatInput.value = text;
+          submitChatMessage();
+        }
+      };
+
+      window.submitChatMessage = async function() {
+        if (!chatInput) return;
+        var query = chatInput.value.trim();
+        if (!query) return;
+
+        // Ajouter message utilisateur
+        appendMsg(query, 'user');
+        chatInput.value = '';
+
+        // Message IA en attente
+        var aiMsg = appendMsg('<em>Recherche sémantique dans le dossier de Jihed &amp; analyse...</em>', 'ai');
+
+        // Extraction RAG
+        var chunks = getRelevantChunks(query);
+
+        // Appel API Netlify ou Fallback direct
+        try {
+          var apiKeyLocal = localStorage.getItem('admin_api_key') || '';
+          var providerLocal = localStorage.getItem('admin_provider') || 'gemini';
+          var modelLocal = localStorage.getItem('admin_model') || 'gemini-1.5-flash';
+          var promptLocal = localStorage.getItem('admin_prompt') || '';
+
+          var res = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: query,
+              contextChunks: chunks,
+              apiKeyOverride: apiKeyLocal,
+              providerOverride: providerLocal,
+              modelOverride: modelLocal,
+              systemPromptOverride: promptLocal
+            })
+          });
+
+          if (!res.ok) throw new Error('API non disponible');
+          var data = await res.json();
+          var reply = data.reply || data.error;
+          var sourcesHtml = (data.sources && data.sources.length) 
+            ? '<div class="chat-sources">📄 Sources consultées : ' + data.sources.join(', ') + '</div>' 
+            : '';
+
+          aiMsg.innerHTML = formatMarkdown(reply) + sourcesHtml;
+
+        } catch (err) {
+          // Mode RAG local direct (garanti 100% sans erreur même hors-ligne ou sans serveur)
+          var localReply = generateLocalRAGReply(query, chunks);
+          aiMsg.innerHTML = localReply;
+        }
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      };
+
+      function appendMsg(html, type) {
+        var el = document.createElement('div');
+        el.className = 'chat-msg chat-msg-' + type;
+        el.innerHTML = html;
+        chatBox.appendChild(el);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return el;
+      }
+
+      function formatMarkdown(text) {
+        if (!text) return "";
+        return text
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/\n/g, '<br>');
+      }
+
+      function getRelevantChunks(q) {
+        if (!ragData) return [];
+        var words = q.toLowerCase().split(/\s+/).filter(function(w){ return w.length > 2; });
+        var list = [];
+
+        list.push({ title: "Profil & Bio", text: ragData.profile.bio + " Email: " + ragData.profile.email + " Tél: " + ragData.profile.phone + " Lieu: " + ragData.profile.location });
+        if (ragData.education) {
+          ragData.education.forEach(function(e){ list.push({ title: e.degree, text: e.degree + " (" + (e.honors||"") + ") : " + (e.skills_learned||e.skills||"") }); });
+        }
+        if (ragData.experiences) {
+          ragData.experiences.forEach(function(x){ list.push({ title: x.role, text: x.company + " - " + (x.description||x.desc||"") }); });
+        }
+        if (ragData.projects) {
+          ragData.projects.forEach(function(p){ list.push({ title: p.title, text: p.summary + " [Technos: " + (p.technologies ? p.technologies.join(', ') : "") + "]" }); });
+        }
+        if (ragData.faq) {
+          ragData.faq.forEach(function(f){ list.push({ title: "FAQ: " + f.question, text: f.answer }); });
+        }
+
+        var scored = list.map(function(item){
+          var score = 0;
+          var combined = (item.title + " " + item.text).toLowerCase();
+          words.forEach(function(w){
+            if (combined.includes(w)) score += (item.title.toLowerCase().includes(w) ? 4 : 1);
+          });
+          return { item: item, score: score };
+        });
+
+        scored.sort(function(a,b){ return b.score - a.score; });
+        return scored.slice(0, 3).filter(function(s){ return s.score > 0; }).map(function(s){ return s.item; });
+      }
+
+      function generateLocalRAGReply(query, chunks) {
+        if (!chunks || chunks.length === 0) {
+          return "Bonjour ! Je suis l'assistant IA de <strong>Jihed GHANMI</strong>. Jihed est Data Scientist diplômé de l'ESCT (Mention Très Bien). Vous pouvez me poser des questions sur son parcours, ses 4 études de cas (EvalitX AI, ESG S&P 500, Distrisys, Rafiq Al-Ulum) ou ses coordonnées (ghanmijihed33@gmail.com).";
+        }
+
+        var res = "D'après les informations officielles du dossier de Jihed :<br><br>";
+        chunks.forEach(function(c, i){
+          res += "<strong>📌 " + c.title + "</strong> :<br>" + c.text + "<br><br>";
+        });
+        res += '<div class="chat-sources">📄 Sources RAG extraites : ' + chunks.map(function(c){ return c.title; }).join(', ') + '</div>';
+        return res;
+      }
+
+    })();
+  </script>
+
 </body>
 </html>
