@@ -1400,16 +1400,16 @@
           <div>
             <div class="badge-status">
               <span class="pulse-dot"></span>
-              <span>Data Scientist · ESCT (Mention Très Bien)</span>
+              <span>Data Scientist</span>
             </div>
 
             <h1 class="hero-title">
               Jihed GHANMI<br>
-              <span class="gradient-text">Finance, Économétrie &amp; IA Appliquée</span>
+              <span class="gradient-text">Data Scientist | Finance &amp; IA appliquée</span>
             </h1>
 
             <p class="hero-subtitle">
-              De la rigueur statistique au déploiement d’architectures IA en production.
+              À la croisée de la Data Science, de la finance et de l'intelligence artificielle.
             </p>
 
             <p class="hero-desc">
@@ -1450,12 +1450,10 @@
               <div class="v3-card">
                 <div class="portrait-img-box">
                   <img src="assets/portrait.png" alt="Jihed GHANMI - Portrait Corporate">
-                  <div class="floating-pill">
+                  <div class="floating-pill" style="justify-content: center; text-align: center;">
                     <div class="floating-pill-info">
-                      <h4>Jihed GHANMI</h4>
-                      <p>Data Scientist · PFE Redig.io</p>
+                      <h4 style="font-size: 15px; font-weight: 700; color: var(--fg); margin: 0;">Jihed GHANMI</h4>
                     </div>
-                    <div class="floating-pill-score">Master MB</div>
                   </div>
                 </div>
               </div>
@@ -2092,12 +2090,12 @@
   </script>
 
   <!-- BOUTON FLOTTANT DU CHATBOT IA -->
-  <button id="aiChatTrigger" class="ai-chat-trigger" onclick="toggleAiChat()" title="Discuter avec l'IA de Jihed">
+  <button id="aiChatTrigger" class="ai-chat-trigger" onclick="toggleAiChat()" title="Poser une question sur mon profil">
     <span class="ai-sparkle-dot"></span>
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
     </svg>
-    <span>Discuter avec l'IA</span>
+    <span>Poser une question sur mon profil</span>
   </button>
 
   <!-- MODAL DU CHATBOT IA -->
@@ -2106,8 +2104,8 @@
       <div class="ai-header-left">
         <div class="ai-avatar">AI</div>
         <div class="ai-header-text">
-          <h3>Assistant Virtuel · Jihed GHANMI</h3>
-          <span>● RAG Activé · Précis &amp; Vérifié</span>
+          <h3>Assistant de profil · Jihed GHANMI</h3>
+          <span>Parcours, projets &amp; compétences</span>
         </div>
       </div>
       <button id="aiCloseBtn" class="ai-close-btn" onclick="document.getElementById('aiChatModal').classList.remove('open')" title="Fermer">
@@ -2117,14 +2115,16 @@
 
     <div id="chatMessages" class="ai-chat-messages">
       <div class="chat-msg chat-msg-ai">
-        Bonjour ! Je suis l'assistant IA de <strong>Jihed GHANMI</strong>. Je suis directement connecté à ses fiches professionnelles, ses diplômes et ses 4 études de cas phares.
+        Bonjour ! Je suis l'assistant de profil de <strong>Jihed GHANMI</strong>.
         <br><br>
-        Que souhaitez-vous savoir à propos de son profil ?
+        N'hésitez pas à me questionner pour découvrir son parcours, ses réalisations, ses compétences techniques ou ses expériences professionnelles.
+        <br><br>
+        Que souhaitez-vous savoir en premier ?
         <div class="chat-suggestions">
-          <button class="suggestion-chip" onclick="askSuggestion('Quels sont ses 4 projets phares ?')">📌 Ses 4 projets phares</button>
-          <button class="suggestion-chip" onclick="askSuggestion('Parle-moi de son expérience chez Redig.io')">⚡ Expérience Redig.io (EvalitX)</button>
-          <button class="suggestion-chip" onclick="askSuggestion('Quelles sont ses compétences en Data Science &amp; RAG ?')">📊 Compétences Data &amp; RAG</button>
-          <button class="suggestion-chip" onclick="askSuggestion('Comment contacter Jihed ?')">📬 Contact &amp; Disponibilités</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Quels sont ses projets phares ?')">📌 Projets phares</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Parle-moi de son expérience professionnelle')">💼 Expérience professionnelle</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Quelles sont ses compétences techniques ?')">📊 Compétences &amp; outils</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Comment contacter Jihed ?')">📬 Contact &amp; coordonnées</button>
         </div>
       </div>
     </div>
@@ -2320,7 +2320,7 @@
 
       function generateLocalRAGReply(query, chunks) {
         if (!chunks || chunks.length === 0) {
-          return "Bonjour ! Je suis l'assistant IA de <strong>Jihed GHANMI</strong>. Jihed est Data Scientist diplômé de l'ESCT (Mention Très Bien). Vous pouvez me poser des questions sur son parcours, ses 4 études de cas (EvalitX AI, ESG S&P 500, Distrisys, Rafiq Al-Ulum) ou ses coordonnées (ghanmijihed33@gmail.com).";
+          return "Bonjour ! Je suis l'assistant de profil de <strong>Jihed GHANMI</strong>. Jihed est Data Scientist | Finance & IA appliquée. N'hésitez pas à me questionner sur son parcours, ses projets, ses compétences ou ses coordonnées (ghanmijihed33@gmail.com).";
         }
 
         var res = "D'après les informations officielles du dossier de Jihed :<br><br>";
