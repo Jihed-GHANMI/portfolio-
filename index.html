@@ -288,7 +288,7 @@
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
+      grid-template-columns: 0.88fr 1.12fr;
       gap: 56px;
       align-items: center;
     }
@@ -1124,6 +1124,7 @@
     /* ==========================================================
        WIDGET CHATBOT IA & RAG (STYLE VERT ROYAL & GLASSMORPHISM)
        ========================================================== */
+    
     .ai-chat-trigger {
       position: fixed;
       bottom: 26px;
@@ -1131,21 +1132,68 @@
       z-index: 9999;
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 13px 22px;
+      gap: 12px;
+      padding: 10px 18px 10px 12px;
       border-radius: 99px;
-      background: linear-gradient(135deg, var(--royal), var(--mint));
-      color: #ffffff;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 14.5px;
-      font-weight: 700;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: var(--card-glass);
+      color: var(--fg);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      border: 1.5px solid var(--royal);
       cursor: pointer;
-      box-shadow: 0 12px 32px var(--royal-glow);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 14px 36px var(--royal-glow);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .ai-chat-trigger:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 18px 45px var(--royal-glow);
+      border-color: var(--mint);
+      background: var(--card);
+    }
+    .ai-trigger-badge {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--royal), var(--mint));
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px var(--royal-glow);
+    }
+    .ai-sparkle-dot {
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.8);
+      animation: pulseSparkle 2s infinite;
+    }
+    .ai-trigger-content {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+    .ai-trigger-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--fg);
+      line-height: 1.25;
+    }
+    .ai-trigger-sub {
+      font-size: 11px;
+      color: var(--royal);
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
     .ai-chat-trigger:hover {
       transform: translateY(-3px) scale(1.03);
       box-shadow: 0 16px 40px var(--royal-glow);
@@ -1396,6 +1444,23 @@
       <div class="wrap">
         <div class="hero-grid">
           
+          <!-- Colonne Droite : Carte Portrait 3D Interactive -->
+          <div>
+            <div class="v3-container" id="portraitViewer">
+              <div class="v3-card">
+                <div class="portrait-img-box">
+                  <img src="assets/portrait.png" alt="Jihed GHANMI - Portrait Corporate">
+                  <div class="floating-pill" style="justify-content: center; text-align: center;">
+                    <div class="floating-pill-info">
+                      <h4 style="font-size: 15px; font-weight: 700; color: var(--fg); margin: 0;">Jihed GHANMI</h4>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        
           <!-- Colonne Gauche : Présentation -->
           <div>
             <div class="badge-status">
@@ -1444,23 +1509,7 @@
             </div>
           </div>
 
-          <!-- Colonne Droite : Carte Portrait 3D Interactive -->
-          <div>
-            <div class="v3-container" id="portraitViewer">
-              <div class="v3-card">
-                <div class="portrait-img-box">
-                  <img src="assets/portrait.png" alt="Jihed GHANMI - Portrait Corporate">
-                  <div class="floating-pill" style="justify-content: center; text-align: center;">
-                    <div class="floating-pill-info">
-                      <h4 style="font-size: 15px; font-weight: 700; color: var(--fg); margin: 0;">Jihed GHANMI</h4>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
-
-        </div>
 
         <!-- BARRE DE MÉTRIQUES / STATS IMPACT -->
         <div class="metrics-bar">
@@ -2090,12 +2139,17 @@
   </script>
 
   <!-- BOUTON FLOTTANT DU CHATBOT IA -->
-  <button id="aiChatTrigger" class="ai-chat-trigger" onclick="toggleAiChat()" title="Poser une question sur mon profil">
-    <span class="ai-sparkle-dot"></span>
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-    </svg>
-    <span>Poser une question sur mon profil</span>
+  <button id="aiChatTrigger" class="ai-chat-trigger" onclick="toggleAiChat()" title="Posez vos questions à l'IA sur le profil et parcours de Jihed GHANMI">
+    <div class="ai-trigger-badge">
+      <div class="ai-sparkle-dot"></div>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </div>
+    <div class="ai-trigger-content">
+      <span class="ai-trigger-label">Assistant de profil IA</span>
+      <span class="ai-trigger-sub">Discuter de mon parcours &amp; projets</span>
+    </div>
   </button>
 
   <!-- MODAL DU CHATBOT IA -->
@@ -2121,10 +2175,10 @@
         <br><br>
         Que souhaitez-vous savoir en premier ?
         <div class="chat-suggestions">
-          <button class="suggestion-chip" onclick="askSuggestion('Quels sont ses projets phares ?')">📌 Projets phares</button>
-          <button class="suggestion-chip" onclick="askSuggestion('Parle-moi de son expérience professionnelle')">💼 Expérience professionnelle</button>
-          <button class="suggestion-chip" onclick="askSuggestion('Quelles sont ses compétences techniques ?')">📊 Compétences &amp; outils</button>
-          <button class="suggestion-chip" onclick="askSuggestion('Comment contacter Jihed ?')">📬 Contact &amp; coordonnées</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Quels sont ses projets phares ?')">Projets phares</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Parle-moi de son expérience professionnelle')">Expérience professionnelle</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Quelles sont ses compétences techniques ?')">Compétences &amp; outils</button>
+          <button class="suggestion-chip" onclick="askSuggestion('Comment contacter Jihed ?')">Contact &amp; coordonnées</button>
         </div>
       </div>
     </div>
@@ -2319,16 +2373,54 @@
       }
 
       function generateLocalRAGReply(query, chunks) {
-        if (!chunks || chunks.length === 0) {
-          return "Bonjour ! Je suis l'assistant de profil de <strong>Jihed GHANMI</strong>. Jihed est Data Scientist | Finance & IA appliquée. N'hésitez pas à me questionner sur son parcours, ses projets, ses compétences ou ses coordonnées (ghanmijihed33@gmail.com).";
+        var qLower = query.toLowerCase();
+
+        // 1. Question sur le Master / Diplôme / Formation
+        if (qLower.includes('master') || qLower.includes('diplom') || qLower.includes('etude') || qLower.includes('formation') || qLower.includes('ecole') || qLower.includes('esct')) {
+          return "Jihed est titulaire d'un Master Professionnel en Data Science obtenu avec la mention Très Bien à l'École Supérieure de Commerce de Tunis (ESCT, promotion 2024-2026), précédé d'une Licence en Ingénierie Économique et Financière (ESCT, 2021-2024) et d'un Baccalauréat Mathématiques au Lycée Sadiki.";
         }
 
-        var res = "D'après les informations officielles du dossier de Jihed :<br><br>";
-        chunks.forEach(function(c, i){
-          res += "<strong>📌 " + c.title + "</strong> :<br>" + c.text + "<br><br>";
-        });
-        res += '<div class="chat-sources">📄 Sources RAG extraites : ' + chunks.map(function(c){ return c.title; }).join(', ') + '</div>';
-        return res;
+        // 2. Question sur le Contact / Email / Téléphone
+        if (qLower.includes('contact') || qLower.includes('email') || qLower.includes('mail') || qLower.includes('telephone') || qLower.includes('tel') || qLower.includes('joindre')) {
+          return "Vous pouvez contacter Jihed GHANMI par email à ghanmijihed33@gmail.com ou par téléphone au +216 53 713 911 (Tunis, Tunisie).";
+        }
+
+        // 3. Question sur l'expérience / Redig.io / Amen Bank
+        if (qLower.includes('redig') || qLower.includes('stage') || qLower.includes('experience') || qLower.includes('amen bank') || qLower.includes('poste') || qLower.includes('travail')) {
+          if (qLower.includes('amen')) {
+            return "Chez Amen Bank (juillet - septembre 2023), Jihed a modélisé le risque de crédit bancaire sous R pour son projet de fin de licence.";
+          }
+          return "Chez Redig.io, Jihed a réalisé son projet de fin d'études en tant que Data Scientist (février - juin 2026), où il a conçu et déployé en production le modèle EvalitX AI validé sur 300 entreprises. Il y a également été assistant digital pendant près de deux ans (2023-2025).";
+        }
+
+        // 4. Question sur les projets
+        if (qLower.includes('projet') || qLower.includes('evalitx') || qLower.includes('esg') || qLower.includes('distrisys') || qLower.includes('rafiq')) {
+          if (qLower.includes('evalitx')) {
+            return "EvalitX AI est un modèle d'audit de maturité data et digitale développé chez Redig.io. Il combine la méthode multicritère AHP (Saaty), les référentiels ISO/DAMA/CMMI et l'IA générative (LLM, RAG) pour générer des rapports stratégiques. Validé sur 300 entreprises.";
+          }
+          if (qLower.includes('esg') || qLower.includes('500') || qLower.includes('bourse')) {
+            return "L'analyse ESG sur le S&P 500 porte sur 503 entreprises (Sustainalytics). Elle associe modélisation statistique du score ESG, segmentation et prédiction de la volatilité boursière via GARCH et réseaux de neurones profonds sur cinq ans de données.";
+          }
+          if (qLower.includes('distrisys') || qLower.includes('etl') || qLower.includes('power bi')) {
+            return "Distrisys est une chaîne décisionnelle complète : pipelines ETL sous SSIS, entrepôt en étoile sous SQL Server, cube multidimensionnel SSAS (MDX) et tableau de bord de pilotage sous Power BI.";
+          }
+          if (qLower.includes('rafiq') || qLower.includes('science') || qLower.includes('svt') || qLower.includes('arabe')) {
+            return "Rafiq Al-Ulum est un assistant pédagogique en arabe (RTL natif) dédié aux collégiens de 9e année en SVT. Il s'appuie sur une architecture RAG indexée sur le programme officiel.";
+          }
+          return "Jihed a réalisé quatre études de cas majeures : 1) EvalitX AI (audit de maturité par IA générative & AHP), 2) Analyse des risques ESG du S&P 500 (GARCH & Machine Learning), 3) Distrisys (chaîne décisionnelle ETL, SSAS & Power BI), et 4) Rafiq Al-Ulum (EdTech RAG en arabe RTL).";
+        }
+
+        // 5. Question sur les compétences / outils
+        if (qLower.includes('competence') || qLower.includes('outil') || qLower.includes('python') || qLower.includes('langage') || qLower.includes('stack')) {
+          return "Les compétences de Jihed couvrent la Data Science (Python, R, SQL, scikit-learn, XGBoost, AHP), l'IA générative (architectures RAG, prompt engineering, API NVIDIA NIM, NLP), l'ingénierie des données (PostgreSQL, Supabase, SQL Server, SSIS, SSAS) et la Business Intelligence (Power BI, Recharts, React).";
+        }
+
+        // 6. Réponse directe ciblée depuis les chunks
+        if (chunks && chunks.length > 0) {
+          return chunks[0].text;
+        }
+
+        return "Je suis à votre disposition pour vous renseigner de façon directe et précise sur le parcours, les diplômes, les compétences ou les projets de Jihed GHANMI.";
       }
 
     })();
