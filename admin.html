@@ -411,6 +411,93 @@
       display: none;
       z-index: 10000;
     }
+  
+    /* Styles Apprentissage RAG & Import de Fichiers */
+    .upload-dropzone {
+      border: 2px dashed var(--royal);
+      border-radius: 16px;
+      padding: 28px 20px;
+      text-align: center;
+      background: rgba(16, 185, 129, 0.04);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .upload-dropzone:hover, .upload-dropzone.dragover {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    .upload-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 10px;
+      color: var(--royal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(16, 185, 129, 0.12);
+      border-radius: 50%;
+    }
+    .upload-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+    .upload-hint {
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+    .chunk-form-card {
+      background: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .badge-custom {
+      background: rgba(16, 185, 129, 0.18);
+      color: var(--royal);
+      border: 1px solid var(--royal);
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 99px;
+      margin-left: 8px;
+    }
+    .btn-delete-chunk {
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #ef4444;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-delete-chunk:hover {
+      background: #ef4444;
+      color: #ffffff;
+    }
+    .rag-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--royal);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin: 20px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
   </style>
 </head>
 <body>
@@ -569,24 +656,70 @@
       <!-- ONGLET 3 : BASE RAG (LEARNING) -->
       <section id="tab-rag" class="tab-content" style="display: none;">
         <div class="card-panel">
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
             <div>
-              <h3>📚 Fiches de Connaissances RAG</h3>
-              <p class="desc" style="margin-bottom: 0;">L'agent puise directement dans ces fiches pour composer ses réponses.</p>
+              <h3>📚 Base de Connaissances & Apprentissage (Learning RAG)</h3>
+              <p class="desc" style="margin-bottom: 0;">L'agent puise directement dans ces fiches pour formuler ses réponses. Vous pouvez lui apprendre de nouvelles informations en important des documents ou en saisissant des fiches.</p>
             </div>
-            <button class="btn btn-royal" onclick="openAddChunkModal()">
-              <span>+ Ajouter une fiche</span>
-            </button>
+            <div style="display: flex; gap: 10px;">
+              <button class="btn btn-royal" onclick="toggleAddChunkForm()">
+                <span>+ Ajouter une fiche manuelle</span>
+              </button>
+            </div>
           </div>
 
+          <!-- Zone de Dépose de Fichiers (Learning Automatique) -->
+          <div class="upload-dropzone" id="dropZone" onclick="document.getElementById('fileLearningInput').click()">
+            <input type="file" id="fileLearningInput" accept=".txt,.md,.json,.csv,.pdf" style="display: none;" onchange="handleFileUpload(event)">
+            <div class="upload-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <div class="upload-title">Déposer un document pour apprentissage automatique (Learning)</div>
+            <div class="upload-hint">Glissez-déposez un fichier ici ou cliquez pour parcourir — Formats : <strong>.txt, .md, .json, .csv, .pdf</strong></div>
+          </div>
+
+          <!-- Formulaire Ajout Manuel de Fiche (Déroulant) -->
+          <div id="addChunkFormCard" class="chunk-form-card">
+            <h4 style="margin-bottom: 14px; color: var(--fg); font-size: 15px;">✍️ Nouvelle fiche de connaissance pour l'agent</h4>
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label style="font-size: 12px; font-weight: 600; color: var(--fg-muted); display: block; margin-bottom: 4px;">Titre de la fiche / Sujet</label>
+                <input type="text" id="newChunkTitle" class="form-control" placeholder="ex: Certification AWS Machine Learning ou Projet Rédig.io">
+              </div>
+              <div>
+                <label style="font-size: 12px; font-weight: 600; color: var(--fg-muted); display: block; margin-bottom: 4px;">Catégorie</label>
+                <select id="newChunkCategory" class="form-control">
+                  <option value="Formation">Formation / Diplôme</option>
+                  <option value="Expérience">Expérience pro</option>
+                  <option value="Projet Phare">Projet Data / IA</option>
+                  <option value="Compétence">Compétence technique</option>
+                  <option value="FAQ">Question / Réponse</option>
+                  <option value="Général" selected>Général</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <label style="font-size: 12px; font-weight: 600; color: var(--fg-muted); display: block; margin-bottom: 4px;">Contenu textuel détaillé (ce que l'agent doit savoir)</label>
+              <textarea id="newChunkContent" class="form-control" rows="4" placeholder="Décrivez les faits précis, les technologies utilisées, le contexte, les résultats obtenus..."></textarea>
+            </div>
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+              <button class="btn btn-outline" onclick="toggleAddChunkForm()">Annuler</button>
+              <button class="btn btn-royal" onclick="saveNewManualChunk()">Mémoriser cette fiche</button>
+            </div>
+          </div>
+
+          <!-- Liste des Fiches RAG -->
           <div id="ragChunksList">
             <!-- Liste injectée en JS -->
           </div>
 
-          <div style="margin-top: 24px; display: flex; gap: 12px;">
+          <div style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
             <button class="btn btn-outline" onclick="exportKnowledgeJSON()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              <span>Télécharger knowledge.json mis à jour</span>
+              <span>Télécharger knowledge.json mis à jour (Complet)</span>
+            </button>
+            <button class="btn btn-outline" style="color: var(--danger); border-color: rgba(239,68,68,0.3);" onclick="clearCustomChunks()">
+              <span>Effacer uniquement les fiches personnalisées</span>
             </button>
           </div>
         </div>
@@ -700,33 +833,257 @@ DIRECTIVES ABSOLUES :
       }
     }
 
+    function toggleAddChunkForm() {
+      var form = document.getElementById('addChunkFormCard');
+      if (form.style.display === 'block') {
+        form.style.display = 'none';
+      } else {
+        form.style.display = 'block';
+        document.getElementById('newChunkTitle').focus();
+      }
+    }
+
+    function openAddChunkModal() {
+      toggleAddChunkForm();
+    }
+
+    function saveNewManualChunk() {
+      var title = document.getElementById('newChunkTitle').value.trim();
+      var category = document.getElementById('newChunkCategory').value;
+      var content = document.getElementById('newChunkContent').value.trim();
+
+      if (!title || !content) {
+        alert("Veuillez renseigner un titre et un contenu pour cette fiche.");
+        return;
+      }
+
+      var customChunks = [];
+      try {
+        customChunks = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+      } catch(e) { customChunks = []; }
+
+      customChunks.unshift({
+        id: 'chunk_' + Date.now(),
+        title: title,
+        category: category,
+        content: content,
+        date: new Date().toLocaleDateString('fr-FR')
+      });
+
+      localStorage.setItem('custom_knowledge_chunks', JSON.stringify(customChunks));
+
+      document.getElementById('newChunkTitle').value = '';
+      document.getElementById('newChunkContent').value = '';
+      document.getElementById('addChunkFormCard').style.display = 'none';
+
+      renderRAGChunks();
+      showToast("Fiche ajoutée et mémorisée par l'agent !");
+    }
+
+    function deleteCustomChunk(index) {
+      if (!confirm("Voulez-vous vraiment supprimer cette fiche personnalisée ?")) return;
+      try {
+        var customChunks = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+        customChunks.splice(index, 1);
+        localStorage.setItem('custom_knowledge_chunks', JSON.stringify(customChunks));
+        renderRAGChunks();
+        showToast("Fiche supprimée.");
+      } catch(e) {}
+    }
+
+    function clearCustomChunks() {
+      if (!confirm("Attention : voulez-vous effacer toutes vos fiches personnalisées apprises ?")) return;
+      localStorage.removeItem('custom_knowledge_chunks');
+      renderRAGChunks();
+      showToast("Toutes les fiches personnalisées ont été effacées.");
+    }
+
+    function handleFileUpload(event) {
+      var file = event.target.files[0];
+      if (!file) return;
+
+      var reader = new FileReader();
+      var fileName = file.name;
+      var fileExt = fileName.split('.').pop().toLowerCase();
+
+      reader.onload = function(e) {
+        var rawText = e.target.result;
+
+        if (fileExt === 'json') {
+          try {
+            var parsed = JSON.parse(rawText);
+            var customChunks = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+            
+            if (Array.isArray(parsed)) {
+              parsed.forEach(function(item){
+                customChunks.unshift({
+                  id: 'chunk_' + Date.now() + Math.random(),
+                  title: item.title || item.name || fileName,
+                  category: item.category || "Fichier JSON",
+                  content: item.content || item.text || JSON.stringify(item),
+                  date: new Date().toLocaleDateString('fr-FR')
+                });
+              });
+            } else if (parsed.profile) {
+              // Si l'utilisateur importe un knowledge.json complet
+              knowledgeData = parsed;
+              localStorage.setItem('admin_custom_knowledge_full', JSON.stringify(parsed));
+            } else {
+              customChunks.unshift({
+                id: 'chunk_' + Date.now(),
+                title: fileName,
+                category: "JSON Data",
+                content: typeof rawText === 'string' ? rawText.substring(0, 4000) : JSON.stringify(parsed),
+                date: new Date().toLocaleDateString('fr-FR')
+              });
+            }
+            localStorage.setItem('custom_knowledge_chunks', JSON.stringify(customChunks));
+            renderRAGChunks();
+            showToast("Fichier JSON importé avec succès !");
+            return;
+          } catch(err) {
+            console.error(err);
+          }
+        }
+
+        // Fichiers texte (.txt, .md, .csv, ou extraction textuelle)
+        var cleanContent = rawText;
+        if (typeof cleanContent !== 'string') {
+          cleanContent = new TextDecoder('utf-8').decode(cleanContent);
+        }
+        cleanContent = cleanContent.replace(/\r\n/g, '\n').trim();
+
+        if (!cleanContent) {
+          alert("Le fichier semble vide ou illisible.");
+          return;
+        }
+
+        var customChunks = [];
+        try {
+          customChunks = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+        } catch(e) { customChunks = []; }
+
+        customChunks.unshift({
+          id: 'chunk_' + Date.now(),
+          title: fileName.replace(/\.[^/.]+$/, ""),
+          category: fileExt.toUpperCase(),
+          content: cleanContent.substring(0, 5000),
+          date: new Date().toLocaleDateString('fr-FR')
+        });
+
+        localStorage.setItem('custom_knowledge_chunks', JSON.stringify(customChunks));
+        renderRAGChunks();
+        showToast("Document "" + fileName + "" importé et mémorisé !");
+      };
+
+      if (fileExt === 'pdf') {
+        // Lecture texte du PDF
+        reader.readAsText(file);
+      } else {
+        reader.readAsText(file, 'utf-8');
+      }
+
+      event.target.value = '';
+    }
+
+    // Gestion du Drag and Drop visuel
+    document.addEventListener('DOMContentLoaded', function(){
+      var dropZone = document.getElementById('dropZone');
+      if (!dropZone) return;
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, function(e) {
+          e.preventDefault(); e.stopPropagation();
+          dropZone.classList.add('dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, function(e) {
+          e.preventDefault(); e.stopPropagation();
+          dropZone.classList.remove('dragover');
+        }, false);
+      });
+
+      dropZone.addEventListener('drop', function(e) {
+        var dt = e.dataTransfer;
+        var files = dt.files;
+        if (files && files.length > 0) {
+          handleFileUpload({ target: { files: files, value: '' } });
+        }
+      }, false);
+    });
+
     function renderRAGChunks() {
       var container = document.getElementById('ragChunksList');
-      if (!knowledgeData) return;
+      if (!container) return;
       var html = '';
 
-      // Profil
-      html += createChunkCard("Profil & Contact", "Général", knowledgeData.profile.bio + " | Email: " + knowledgeData.profile.email);
+      // 1. Fiches personnalisées / Documents importés
+      var customChunks = [];
+      try {
+        customChunks = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+      } catch(e) { customChunks = []; }
 
-      // Éducation
-      knowledgeData.education.forEach(function(ed){
-        html += createChunkCard(ed.degree + " (" + ed.institution + ")", "Formation", ed.honors + " · " + ed.skills_learned);
-      });
+      if (customChunks.length > 0) {
+        html += `<div class="rag-section-title">✨ Fiches Personnalisées & Documents Appris (${customChunks.length})</div>`;
+        customChunks.forEach(function(c, idx){
+          html += `
+            <div class="rag-item" style="border-left: 3px solid var(--royal); background: rgba(16, 185, 129, 0.05);">
+              <div style="flex-grow: 1;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                  <div>
+                    <span class="badge-tag">${c.category || 'Appris'}</span>
+                    <span class="badge-custom">Mémorisé (${c.date || 'Récemment'})</span>
+                  </div>
+                  <button class="btn-delete-chunk" onclick="deleteCustomChunk(${idx})">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    Supprimer
+                  </button>
+                </div>
+                <h4>${c.title}</h4>
+                <p>${c.content}</p>
+              </div>
+            </div>
+          `;
+        });
+      }
 
-      // Expériences
-      knowledgeData.experiences.forEach(function(exp){
-        html += createChunkCard(exp.role + " - " + exp.company, "Expérience", exp.description);
-      });
+      // 2. Fiches de base de connaissances initiales
+      if (knowledgeData) {
+        html += `<div class="rag-section-title">📚 Fiches du Profil Initial (Jihed GHANMI)</div>`;
 
-      // Projets
-      knowledgeData.projects.forEach(function(pj){
-        html += createChunkCard(pj.title, "Projet Phare", pj.summary + " [Technos: " + pj.technologies.join(', ') + "]");
-      });
+        // Profil
+        html += createChunkCard("Profil & Contact", "Général", knowledgeData.profile.bio + " | Email: " + knowledgeData.profile.email);
 
-      // FAQ
-      knowledgeData.faq.forEach(function(q){
-        html += createChunkCard("FAQ: " + q.question, "FAQ", q.answer);
-      });
+        // Éducation
+        if (knowledgeData.education) {
+          knowledgeData.education.forEach(function(ed){
+            html += createChunkCard(ed.degree + " (" + ed.institution + ")", "Formation", ed.honors + " · " + (ed.skills_learned || ed.skills || ''));
+          });
+        }
+
+        // Expériences
+        if (knowledgeData.experiences) {
+          knowledgeData.experiences.forEach(function(exp){
+            html += createChunkCard(exp.role + " - " + exp.company, "Expérience", exp.description);
+          });
+        }
+
+        // Projets
+        if (knowledgeData.projects) {
+          knowledgeData.projects.forEach(function(pj){
+            html += createChunkCard(pj.title, "Projet Phare", pj.summary + " [Technos: " + (pj.technologies ? pj.technologies.join(', ') : '') + "]");
+          });
+        }
+
+        // FAQ
+        if (knowledgeData.faq) {
+          knowledgeData.faq.forEach(function(q){
+            html += createChunkCard("FAQ: " + q.question, "FAQ", q.answer);
+          });
+        }
+      }
 
       container.innerHTML = html;
     }
@@ -743,6 +1100,15 @@ DIRECTIVES ABSOLUES :
       `;
     }
 
+    function showToast(msg) {
+      var toast = document.getElementById('toast');
+      if (toast) {
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(function(){ toast.style.display = 'none'; }, 2800);
+      }
+    }
+
     function saveAllSettings() {
       localStorage.setItem('admin_api_key', document.getElementById('apiKey').value.trim());
       localStorage.setItem('admin_provider', document.getElementById('apiProvider').value);
@@ -751,24 +1117,34 @@ DIRECTIVES ABSOLUES :
       localStorage.setItem('admin_prompt', document.getElementById('systemPromptText').value.trim());
       localStorage.setItem('admin_pin', document.getElementById('adminPin').value.trim());
 
-      var toast = document.getElementById('toast');
-      toast.style.display = 'block';
-      setTimeout(function(){ toast.style.display = 'none'; }, 2500);
+      showToast("Paramètres sauvegardés avec succès !");
     }
 
     function resetDefaultPrompt() {
       if (confirm('Voulez-vous rétablir le prompt système par défaut ?')) {
         document.getElementById('systemPromptText').value = defaultPrompt;
+        showToast("Prompt réinitialisé.");
       }
     }
 
     function exportKnowledgeJSON() {
-      if(!knowledgeData) return;
-      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(knowledgeData, null, 2));
+      if (!knowledgeData) return;
+      var exportData = JSON.parse(JSON.stringify(knowledgeData));
+
+      // Fusionner les fiches personnalisées dans le JSON exporté
+      try {
+        var customChunks = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+        if (customChunks.length > 0) {
+          exportData.custom_learning = customChunks;
+        }
+      } catch(e) {}
+
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
       var dlAnchor = document.createElement('a');
       dlAnchor.setAttribute("href", dataStr);
       dlAnchor.setAttribute("download", "knowledge.json");
       dlAnchor.click();
+      showToast("knowledge.json complet téléchargé !");
     }
 
     // Playground Logic
@@ -832,6 +1208,14 @@ DIRECTIVES ABSOLUES :
       if (!knowledgeData) return [];
       var qWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
       var allChunks = [];
+
+      // Inclure les fiches personnalisées apprises
+      try {
+        var custom = JSON.parse(localStorage.getItem('custom_knowledge_chunks') || '[]');
+        if (Array.isArray(custom)) {
+          custom.forEach(c => allChunks.push({ title: c.title, content: "[" + (c.category || "Appris") + "] " + c.content }));
+        }
+      } catch(e) {}
 
       allChunks.push({ title: "Profil & Bio", content: knowledgeData.profile.bio + " Contact: " + knowledgeData.profile.email });
       knowledgeData.education.forEach(ed => allChunks.push({ title: ed.degree, content: ed.institution + " " + ed.honors + " " + ed.skills_learned }));
