@@ -765,13 +765,13 @@ DIRECTIVES ABSOLUES :
 
     // Vérification du PIN
     function verifyPin() {
-      var pin = document.getElementById('pinInput').value;
-      var savedPin = localStorage.getItem('admin_pin') || '1234';
+      var pin = (document.getElementById('pinInput').value || '').trim();
+      var savedPin = (localStorage.getItem('admin_pin') || '1234').trim();
       if (pin === savedPin) {
         document.getElementById('authOverlay').style.display = 'none';
         sessionStorage.setItem('admin_logged', 'true');
       } else {
-        alert('Code PIN incorrect.');
+        alert('Code PIN incorrect. Le code par défaut est 1234.');
       }
     }
 
