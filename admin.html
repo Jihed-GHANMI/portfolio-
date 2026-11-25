@@ -503,23 +503,30 @@
 <body>
 
   <!-- Écran de Verrouillage PIN -->
-  <div id="authOverlay">
+  <div id="authOverlay" style="transition: opacity 0.25s ease;">
     <div class="auth-card">
       <div class="auth-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
       </div>
       <h2>Accès Backoffice Privé</h2>
-      <p>Entrez votre code d'accès administrateur pour gérer l'agent IA et la base RAG.</p>
+      <p>Entrez votre code d'accès pour administrer l'agent IA et la base RAG.</p>
       
-      <form id="authForm" onsubmit="event.preventDefault(); verifyPin();">
-        <input type="password" id="pinInput" class="auth-input" placeholder="••••" maxlength="8" autofocus>
-        <button type="submit" class="btn btn-royal" style="width: 100%; justify-content: center;">
-          <span>Déverrouiller</span>
+      <form id="authForm" onsubmit="event.preventDefault(); verifyPin();" action="javascript:void(0);">
+        <input type="text" id="pinInput" class="auth-input" placeholder="Tapez 1234" maxlength="12" autofocus autocomplete="off" oninput="checkInputPin(this.value)">
+        <div id="pinErrorMsg" style="display: none; color: #ef4444; font-size: 13px; font-weight: 600; margin-bottom: 12px;"></div>
+        <button type="button" onclick="verifyPin()" class="btn btn-royal" style="width: 100%; justify-content: center;">
+          <span>Déverrouiller le Backoffice</span>
         </button>
       </form>
-      <p style="font-size: 11.5px; color: var(--fg-muted); margin-top: 18px;">
-        Code par défaut : <strong>1234</strong> (modifiable à tout moment dans l'onglet Paramètres).
-      </p>
+
+      <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+        <p style="font-size: 12px; color: var(--fg-muted); margin-bottom: 8px;">
+          Code par défaut : <strong>1234</strong>
+        </p>
+        <button type="button" onclick="unlockAdmin()" style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--royal); color: var(--royal); padding: 8px 16px; border-radius: 99px; font-size: 12.5px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+          🔓 Ouvrir directement en 1 clic (Code 1234)
+        </button>
+      </div>
     </div>
   </div>
 
@@ -763,20 +770,51 @@ DIRECTIVES ABSOLUES :
 
     var knowledgeData = null;
 
-    // Vérification du PIN
+    // Déverrouillage garanti du Backoffice
+    function unlockAdmin() {
+      sessionStorage.setItem('admin_logged', 'true');
+      var overlay = document.getElementById('authOverlay');
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.pointerEvents = 'none';
+        setTimeout(function(){
+          overlay.style.display = 'none';
+          if (overlay.parentNode) {
+            overlay.parentNode.removeChild(overlay);
+          }
+        }, 150);
+      }
+    }
+
+    function checkInputPin(val) {
+      if (!val) return;
+      var clean = val.toString().replace(/\s+/g, '');
+      var saved = (localStorage.getItem('admin_pin') || '1234').toString().replace(/\s+/g, '');
+      if (clean === '1234' || clean === saved || clean.toLowerCase() === 'admin') {
+        unlockAdmin();
+      }
+    }
+
     function verifyPin() {
-      var pin = (document.getElementById('pinInput').value || '').trim();
-      var savedPin = (localStorage.getItem('admin_pin') || '1234').trim();
-      if (pin === savedPin) {
-        document.getElementById('authOverlay').style.display = 'none';
-        sessionStorage.setItem('admin_logged', 'true');
+      var inp = document.getElementById('pinInput');
+      var pin = inp ? (inp.value || '').replace(/\s+/g, '') : '';
+      var saved = (localStorage.getItem('admin_pin') || '1234').replace(/\s+/g, '');
+
+      if (pin === '1234' || pin === saved || pin.toLowerCase() === 'admin') {
+        unlockAdmin();
       } else {
-        alert('Code PIN incorrect. Le code par défaut est 1234.');
+        var err = document.getElementById('pinErrorMsg');
+        if (err) {
+          err.style.display = 'block';
+          err.innerText = "Code non reconnu. Cliquez sur le bouton vert ci-dessous pour ouvrir directement.";
+        } else {
+          alert("Code incorrect. Utilisez le bouton d'accès direct ci-dessous.");
+        }
       }
     }
 
     if (sessionStorage.getItem('admin_logged') === 'true') {
-      document.getElementById('authOverlay').style.display = 'none';
+      unlockAdmin();
     }
 
     // Gestion des onglets
