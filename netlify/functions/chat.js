@@ -52,7 +52,11 @@ DIRECTIVES ABSOLUES :
 - Le ton doit être exclusivement corporate, neutre, professionnel et textuel.
 
 3. VÉRACITÉ (RAG) :
-- Base-toi uniquement sur les données RAG fournies. Si une information n'est pas renseignée, indique simplement que le dossier ne contient pas cette information et oriente vers l'email de Jihed.`;
+- Base-toi uniquement sur les données RAG fournies. Si une information n'est pas renseignée, indique simplement et poliment que vous n'avez pas cette précision et proposez de contacter Jihed directement par email (ghanmijihed33@gmail.com).
+
+4. PRÉSENTATION NATURELLE & SOBRE :
+- Ne mentionne JAMAIS de métadonnées, jamais de préfixe comme "Source 1", "FAQ", "Dossier RAG", "D'après les documents", etc.
+- Réponds directement et professionnellement au recruteur ou visiteur sans aucun artifice.`;
 
     const systemPrompt = systemPromptOverride || defaultSystemPrompt;
 
@@ -62,16 +66,47 @@ DIRECTIVES ABSOLUES :
         contextChunks.map((c, i) => `[Source ${i+1}: ${c.title || 'Info'}]\n${c.content || c.text || JSON.stringify(c)}`).join("\n\n");
     }
 
-    // 1. SI AUCUNE CLÉ API N'EST CONFIGURÉE : Mode Fallback Intelligent basé sur le RAG
+    // 1. SI AUCUNE CLÉ API N'EST CONFIGURÉE : Réponses professionnelles directes basées sur le RAG
     if (!apiKey) {
+      const qLower = message.toLowerCase();
       let smartFallbackReply = "";
-      if (contextChunks && contextChunks.length > 0) {
+
+      if (qLower.includes('master') || qLower.includes('diplom') || qLower.includes('etude') || qLower.includes('formation') || qLower.includes('ecole') || qLower.includes('esct')) {
+        smartFallbackReply = "Jihed est titulaire d'un Master Professionnel en Data Science obtenu avec la mention Très Bien à l'École Supérieure de Commerce de Tunis (ESCT, promotion 2024-2026), précédé d'une Licence en Ingénierie Économique et Financière (ESCT, 2021-2024) et d'un Baccalauréat Mathématiques au Lycée Sadiki.";
+      } else if (qLower.includes('contact') || qLower.includes('email') || qLower.includes('mail') || qLower.includes('telephone') || qLower.includes('tel') || qLower.includes('joindre')) {
+        smartFallbackReply = "Vous pouvez contacter Jihed GHANMI directement par email à ghanmijihed33@gmail.com ou par téléphone au +216 53 713 911 (Tunis, Tunisie).";
+      } else if (qLower.includes('experience') || qLower.includes('redig') || qLower.includes('amen') || qLower.includes('stage') || qLower.includes('poste') || qLower.includes('travail')) {
+        if (qLower.includes('amen')) {
+          smartFallbackReply = "Chez Amen Bank (juillet - septembre 2023), Jihed a modélisé le risque de crédit bancaire sous R pour son projet de fin de licence.";
+        } else {
+          smartFallbackReply = "Chez Redig.io, Jihed a réalisé son projet de fin d'études en tant que Data Scientist (février - juin 2026), où il a conçu et déployé en production le modèle EvalitX AI validé sur 300 entreprises. Il y a également été assistant digital pendant près de deux ans (2023-2025).";
+        }
+      } else if (qLower.includes('projet') || qLower.includes('evalitx') || qLower.includes('esg') || qLower.includes('distrisys') || qLower.includes('rafiq')) {
+        if (qLower.includes('evalitx')) {
+          smartFallbackReply = "EvalitX AI est un modèle d'audit de maturité data et digitale développé chez Redig.io. Il combine la méthode multicritère AHP (Saaty), les référentiels ISO/DAMA/CMMI et l'IA générative (LLM, RAG) pour générer des rapports stratégiques. Validé sur 300 entreprises.";
+        } else if (qLower.includes('esg') || qLower.includes('500') || qLower.includes('bourse')) {
+          smartFallbackReply = "L'analyse ESG sur le S&P 500 porte sur 503 entreprises (Sustainalytics). Elle associe modélisation statistique du score ESG, segmentation et prédiction de la volatilité boursière via GARCH et réseaux de neurones profonds sur cinq ans de données.";
+        } else if (qLower.includes('distrisys') || qLower.includes('etl') || qLower.includes('power bi')) {
+          smartFallbackReply = "Distrisys est une chaîne décisionnelle complète : pipelines ETL sous SSIS, entrepôt en étoile sous SQL Server, cube multidimensionnel SSAS (MDX) et tableau de bord de pilotage sous Power BI.";
+        } else if (qLower.includes('rafiq') || qLower.includes('svt') || qLower.includes('arabe')) {
+          smartFallbackReply = "Rafiq Al-Ulum est un assistant pédagogique en arabe (RTL natif) dédié aux collégiens de 9e année en SVT, s'appuyant sur une architecture RAG indexée sur le programme officiel.";
+        } else {
+          smartFallbackReply = "Jihed a réalisé quatre études de cas majeures : EvalitX AI (audit par IA & AHP), Analyse des risques ESG S&P 500 (GARCH & Machine Learning), Distrisys (chaîne décisionnelle ETL & Power BI) et Rafiq Al-Ulum (RAG EdTech en arabe).";
+        }
+      } else if (qLower.includes('competence') || qLower.includes('outil') || qLower.includes('techno') || qLower.includes('stack') || qLower.includes('python')) {
+        smartFallbackReply = "Les compétences de Jihed couvrent la Data Science (Python, R, SQL, scikit-learn, XGBoost, AHP), l'IA générative (architectures RAG, prompt engineering, LLM), l'ingénierie des données (PostgreSQL, Supabase, SQL Server, SSIS, SSAS) et la Business Intelligence (Power BI, Recharts).";
+      } else if (qLower.includes('disponib') || qLower.includes('embauche') || qLower.includes('recrut') || qLower.includes('cdi') || qLower.includes('opportunit')) {
+        smartFallbackReply = "Jihed est diplômé et immédiatement disponible pour des opportunités en CDI, CDD ou missions Data Science / IA / Finance, en Tunisie, en France ou à l'international (présentiel ou remote).";
+      } else if (contextChunks && contextChunks.length > 0) {
         const topChunk = contextChunks[0];
-        smartFallbackReply = `Je peux vous renseigner à ce sujet ! D'après le dossier professionnel de Jihed :\n\n` +
-          `**${topChunk.title}** :\n${topChunk.content || topChunk.text}\n\n` +
-          `*💡 Astuce : Jihed peut activer la synthèse neuronale en direct en configurant une clé API gratuite dans le Backoffice.*`;
+        let clean = topChunk.content || topChunk.text || "";
+        clean = clean.replace(/^FAQ\s*:\s*[^
+]+
+*/i, '');
+        clean = clean.replace(/^\[[^\]]+\]\s*/i, '');
+        smartFallbackReply = clean.trim();
       } else {
-        smartFallbackReply = `Bonjour ! Je suis l'assistant de Jihed GHANMI. Vous pouvez me poser des questions sur son parcours (Master Data Science ESCT avec Mention Très Bien), ses 4 projets phares (EvalitX AI, ESG S&P 500, Distrisys, Rafiq Al-Ulum) ou ses compétences en Python, R, LLM et RAG. Vous pouvez également le contacter directement à ghanmijihed33@gmail.com.`;
+        smartFallbackReply = "Jihed GHANMI est Data Scientist spécialisé en Finance & IA appliquée, diplômé d'un Master Professionnel en Data Science avec mention Très Bien à l'ESCT.";
       }
 
       return {
@@ -79,7 +114,7 @@ DIRECTIVES ABSOLUES :
         headers,
         body: JSON.stringify({
           reply: smartFallbackReply,
-          sources: contextChunks ? contextChunks.map(c => c.title) : ['Profil Jihed GHANMI'],
+          sources: [],
           isFallback: true
         })
       };
@@ -116,7 +151,7 @@ DIRECTIVES ABSOLUES :
         headers,
         body: JSON.stringify({
           reply: replyText,
-          sources: contextChunks ? contextChunks.map(c => c.title) : [],
+          sources: [],
           provider: 'Google Gemini'
         })
       };
@@ -165,7 +200,7 @@ DIRECTIVES ABSOLUES :
         headers,
         body: JSON.stringify({
           reply: replyText,
-          sources: contextChunks ? contextChunks.map(c => c.title) : [],
+          sources: [],
           provider: 'Groq Cloud'
         })
       };

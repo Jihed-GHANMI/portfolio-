@@ -1082,14 +1082,85 @@
       .nav-links {
         display: none;
       }
+      .nav-inner {
+        height: 64px;
+      }
+      .logo {
+        gap: 10px;
+      }
+      .logo-badge {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+        border-radius: 11px;
+      }
+      .logo-text h2 {
+        font-size: 16px;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+      .logo-text span {
+        font-size: 10px;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+      .nav-actions {
+        gap: 8px;
+      }
+      .theme-toggle-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+      }
+      .btn-cv-header {
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 11px;
+        gap: 6px;
+      }
+      .hero-section {
+        padding: 36px 0 32px;
+      }
+      .hero-title {
+        font-size: 28px !important;
+        line-height: 1.2;
+      }
+      .hero-subtitle {
+        font-size: 15px !important;
+      }
+      .hero-desc {
+        font-size: 14.5px !important;
+        line-height: 1.6;
+        margin-bottom: 24px;
+      }
+      .profile-avatar-box {
+        width: 150px !important;
+        height: 150px !important;
+        margin: 0 auto 18px !important;
+      }
+      .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+      }
+      .hero-buttons .btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .hero-meta-chips {
+        gap: 8px;
+        justify-content: center;
+      }
+      .meta-chip {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
       .metrics-grid {
         grid-template-columns: 1fr;
       }
       .skills-grid {
         grid-template-columns: 1fr;
-      }
-      .hero-section {
-        padding: 50px 0 40px;
       }
       .project-card-body {
         padding: 22px;
@@ -1103,6 +1174,58 @@
       .timeline-item {
         padding-left: 36px;
       }
+
+      /* Chatbot flottant mobile - Dégagé du badge Netlify */
+      .ai-chat-trigger {
+        bottom: 75px;
+        right: 16px;
+        padding: 8px 14px 8px 10px;
+        gap: 10px;
+      }
+      .ai-trigger-badge {
+        width: 36px;
+        height: 36px;
+      }
+      .ai-trigger-label {
+        font-size: 12.5px;
+      }
+      .ai-trigger-sub {
+        font-size: 10px;
+      }
+
+      /* Modal plein écran pratique sur mobile */
+      .ai-chat-modal {
+        bottom: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 88vh;
+        max-height: 88vh;
+        border-radius: 24px 24px 0 0;
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .logo-text h2 {
+        font-size: 14.5px;
+      }
+      .logo-text span {
+        font-size: 9.5px;
+      }
+      .btn-cv-header span {
+        display: none;
+      }
+      .btn-cv-header {
+        padding: 8px 10px;
+        width: 38px;
+        height: 38px;
+        justify-content: center;
+      }
+      .wrap {
+        padding: 0 16px;
+      }
     }
   
     /* ==========================================================
@@ -1111,9 +1234,9 @@
     
     .ai-chat-trigger {
       position: fixed;
-      bottom: 26px;
+      bottom: 85px;
       right: 26px;
-      z-index: 9999;
+      z-index: 99999;
       display: inline-flex;
       align-items: center;
       gap: 12px;
@@ -1124,7 +1247,7 @@
       font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
       border: 1.5px solid var(--royal);
       cursor: pointer;
-      box-shadow: 0 14px 36px var(--royal-glow);
+      box-shadow: 0 16px 40px var(--royal-glow);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1201,17 +1324,17 @@
     /* Modal / Tiroir de Chat */
     .ai-chat-modal {
       position: fixed;
-      bottom: 92px;
+      bottom: 95px;
       right: 26px;
-      width: calc(100% - 52px);
-      max-width: 440px;
-      height: 580px;
+      width: 520px;
+      max-width: calc(100vw - 40px);
+      height: 700px;
       max-height: calc(100vh - 120px);
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 24px;
-      box-shadow: var(--shadow-lg);
-      z-index: 9999;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      z-index: 999999;
       display: none;
       flex-direction: column;
       overflow: hidden;
@@ -2358,12 +2481,8 @@
 
           if (!res.ok) throw new Error('API non disponible');
           var data = await res.json();
-          var reply = data.reply || data.error;
-          var sourcesHtml = (data.sources && data.sources.length) 
-            ? '<div class="chat-sources">📄 Sources consultées : ' + data.sources.join(', ') + '</div>' 
-            : '';
-
-          aiMsg.innerHTML = formatMarkdown(reply) + sourcesHtml;
+          var reply = data.reply || data.error || "Désolé, aucune réponse reçue.";
+          aiMsg.innerHTML = formatMarkdown(reply);
 
         } catch (err) {
           // Mode RAG local direct (garanti 100% sans erreur même hors-ligne ou sans serveur)
@@ -2476,12 +2595,16 @@
           return "Les compétences de Jihed couvrent la Data Science (Python, R, SQL, scikit-learn, XGBoost, AHP), l'IA générative (architectures RAG, prompt engineering, API NVIDIA NIM, NLP), l'ingénierie des données (PostgreSQL, Supabase, SQL Server, SSIS, SSAS) et la Business Intelligence (Power BI, Recharts, React).";
         }
 
-        // 6. Réponse directe ciblée depuis les chunks
+        // 6. Réponse directe ciblée depuis les chunks (nettoyée de tout préfixe technique)
         if (chunks && chunks.length > 0) {
-          return chunks[0].text;
+          var clean = chunks[0].text || "";
+          clean = clean.replace(/^FAQ\s*:\s*[^\n]+\n*/i, '');
+          clean = clean.replace(/^\[[^\]]+\]\s*/i, '');
+          clean = clean.replace(/\*💡 Astuce[\s\S]*$/i, '');
+          return clean.trim();
         }
 
-        return "Je suis à votre disposition pour vous renseigner de façon directe et précise sur le parcours, les diplômes, les compétences ou les projets de Jihed GHANMI.";
+        return "Je suis à votre disposition pour vous renseigner de façon directe et sobre sur le parcours, les diplômes, les compétences ou les projets de Jihed GHANMI.";
       }
 
     })();
